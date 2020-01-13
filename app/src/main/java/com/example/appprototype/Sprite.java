@@ -2,29 +2,30 @@ package com.example.appprototype;
 
 import android.graphics.Bitmap;
 
-public abstract class GameObject {
-    protected Bitmap image;
+public abstract class Sprite {
 
     protected final int rowCount;
     protected final int colCount;
 
+    public final int width;
+    public final int height;
+
+    public int x;
+    public int y;
+
     protected final int WIDTH;
     protected final int HEIGHT;
 
-    protected final int width;
-    protected final int height;
+    //Array para guardar las animaciones
+    public Bitmap image;
 
-    protected int x;
-    protected int y;
+    public Sprite(int rowCount1, int colCount1, Bitmap image, int x, int y) {
+        this.rowCount = rowCount1;
+        this.colCount = colCount1;
 
-    public GameObject(Bitmap image, int rowCount, int colCount, int x, int y)  {
-
+        this.x = x;
+        this.y = y;
         this.image = image;
-        this.rowCount= rowCount;
-        this.colCount= colCount;
-
-        this.x= x;
-        this.y= y;
 
         this.WIDTH = image.getWidth();
         this.HEIGHT = image.getHeight();
@@ -35,7 +36,7 @@ public abstract class GameObject {
 
     protected Bitmap createSubImageAt(int row, int col)  {
         // createBitmap(bitmap, x, y, width, height).
-        Bitmap subImage = Bitmap.createBitmap(image, col* width, row* height ,width,height);
+        Bitmap subImage = Bitmap.createBitmap(image, col* width, row* height, width, height);
         return subImage;
     }
 
@@ -46,6 +47,7 @@ public abstract class GameObject {
     public int getY()  {
         return this.y;
     }
+
 
     public int getHeight() {
         return height;
