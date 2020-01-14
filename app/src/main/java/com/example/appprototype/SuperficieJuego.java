@@ -150,7 +150,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        hideSystemUI();
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = (int)event.getX();
             int y = (int)event.getY();
@@ -205,7 +205,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            hideSystemUI();
+            //hideSystemUI();
         }
     }
 
