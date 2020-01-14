@@ -1,6 +1,7 @@
 package com.example.appprototype;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -58,6 +59,12 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
         this.width = width;
         this.height = height;
+
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            this.height += resources.getDimensionPixelSize(resourceId);
+        }
         this.cnt = context;
         this.v = v;
 
@@ -111,15 +118,15 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             for(int n = 0; n < tilesNumX; n++) {
                 if(i % 2 == 0) {
                     if(n % 2 == 0) {
-                        campoBattalla.add(new GameBackground(this, tilea, posX, posY));
+                        campoBattalla.add(new GameBackground(this, tilea, posX, posY, tileInitialSize, tileInitialSize));
                     }else {
-                        campoBattalla.add(new GameBackground(this, tileb, posX, posY));
+                        campoBattalla.add(new GameBackground(this, tileb, posX, posY, tileInitialSize, tileInitialSize));
                     }
                 }else {
                     if(n % 2 != 0) {
-                        campoBattalla.add(new GameBackground(this, tilea, posX, posY));
+                        campoBattalla.add(new GameBackground(this, tilea, posX, posY, tileInitialSize, tileInitialSize));
                     }else {
-                        campoBattalla.add(new GameBackground(this, tileb, posX, posY));
+                        campoBattalla.add(new GameBackground(this, tileb, posX, posY, tileInitialSize, tileInitialSize));
                     }
                 }
                 posX += tileInitialSize;
@@ -135,9 +142,9 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         for(int i = 0; i < tilesNumY; i++) {
             for(int n = 0; n < tilesNumX; n++) {
                 if(i % 2 ==  0 || n % 2 != 0) {
-                    campoBattalla.add(new GameBackground(this, tilea, posX, posY));
+                    campoBattalla.add(new GameBackground(this, tilea, posX, posY, tileInitialSize, tileInitialSize));
                 }else {
-                    campoBattalla.add(new GameBackground(this, tileb, posX, posY));
+                    campoBattalla.add(new GameBackground(this, tileb, posX, posY, tileInitialSize, tileInitialSize));
                 }
                 posX += tileInitialSize;
 
@@ -184,7 +191,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Bitmap chibiBitmap1 = BitmapFactory.decodeResource(this.getResources(),R.drawable.flat_night_4_bg);
         //chibiBitmap1 = Bitmap.createScaledBitmap(chibiBitmap1, 0, this.height, false);
-        this.backgrund = new GameBackground(this, chibiBitmap1, 0,0);
+        this.backgrund = new GameBackground(this, null, 0,0, this.width, this.height);
 
         makeInitSceene();
 

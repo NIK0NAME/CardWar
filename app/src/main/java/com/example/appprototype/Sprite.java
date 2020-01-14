@@ -7,14 +7,14 @@ public abstract class Sprite {
     protected final int rowCount;
     protected final int colCount;
 
-    public final int width;
-    public final int height;
+    public int width = 0;
+    public int height = 0;
 
     public int x;
     public int y;
 
-    protected final int WIDTH;
-    protected final int HEIGHT;
+    protected int WIDTH = 0;
+    protected int HEIGHT = 0;
 
     //Array para guardar las animaciones
     public Bitmap image;
@@ -27,11 +27,13 @@ public abstract class Sprite {
         this.y = y;
         this.image = image;
 
-        this.WIDTH = image.getWidth();
-        this.HEIGHT = image.getHeight();
+        if(image != null) {
+            this.WIDTH = image.getWidth();
+            this.HEIGHT = image.getHeight();
 
-        this.width = this.WIDTH/ colCount;
-        this.height= this.HEIGHT/ rowCount;
+            this.width = this.WIDTH/ colCount;
+            this.height= this.HEIGHT/ rowCount;
+        }
     }
 
     protected Bitmap createSubImageAt(int row, int col)  {
