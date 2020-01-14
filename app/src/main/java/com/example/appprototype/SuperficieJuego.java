@@ -7,9 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     protected int height;
     protected  GameScene initSceene;
     public List<Sprite> campoBattalla;
+    public Context cnt;
+    public View v;
 
     // Lista casillas
     // Jugador
@@ -41,7 +45,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     //
 
 
-    public SuperficieJuego(Context context, int width, int height) {
+    public SuperficieJuego(Context context, int width, int height, View v) {
         super(context);
 
         // Make Game Surface focusable so it can handle events. .
@@ -50,8 +54,13 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         // Sét callback.
         this.getHolder().addCallback(this);
 
+
+
         this.width = width;
         this.height = height;
+        this.cnt = context;
+        this.v = v;
+
     }
 
     public void makeInitSceene() {
@@ -139,6 +148,19 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int)event.getX();
+            int y = (int)event.getY();
+
+            Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return false;
+    }
+
     //Funcion que actualiza el estado de los elementos de la superfice
     public void  update() {
 
@@ -152,43 +174,61 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             GameBackground itm = (GameBackground) sp;
             itm.draw(canvas);
         }
-        /*Paint t = new Paint();
-        t.setTextSize(70);
-        canvas.drawText("secreen sixe: " + this.width + " - " + this.height,
-                (width / 2 - 450) * 1f,
-                height / 2 * 1f,
-                t);
-        t.setColor(-1);
-        canvas.drawRect(0, height - 200, width, height, t);
-        int pos = 0;
-        for(int i = 0; i < 5; i++) {
-            if(i % 2 == 0) {
-                t.setColor(Color.RED);
-            }else {
-                t.setColor(Color.BLUE);
-            }
-            t.setStrokeWidth(2);
-            canvas.drawRect(pos, height / 6  * 5, pos + width / 5, height, t);
-            pos += width / 5;
-        }*/
+        Paint p = new Paint();
+        p.setColor(Color.RED);
+        canvas.drawRect(0, this.height - 1, 200, this.height, p);
     }
 
     //Funcion setup, se ejecuta al principio del juego y es donde se inicializan todas las cosas
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Bitmap chibiBitmap1 = BitmapFactory.decodeResource(this.getResources(),R.drawable.flat_night_4_bg);
+        //chibiBitmap1 = Bitmap.createScaledBitmap(chibiBitmap1, 0, this.height, false);
         this.backgrund = new GameBackground(this, chibiBitmap1, 0,0);
 
         makeInitSceene();
+
+        //makeScreenUIgoFuckAway();
 
         this.gameThread = new GameThread(this, surfaceHolder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
     }
 
+    public void makeScreenUIgoFuckAway() {
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        this.getRootView().setSystemUiVisibility(uiOptions);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemUI();
+        }
+    }
+
+    private void hideSystemUI() {
+        // Enables regular immersive mode.
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        View decorView = getRootView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
     }
 
     @Override
