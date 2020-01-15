@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Point size = new Point();
         display.getRealSize(size);
         this.w = size.x;
-        this.h = size.y - 75 - 18;
+        this.h = size.y; // - 75 - 18;
 
 
 

@@ -63,7 +63,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            this.height += resources.getDimensionPixelSize(resourceId);
+            this.height += resources.getDimensionPixelSize(resourceId) / 2 - 60;
         }
         this.cnt = context;
         this.v = v;
@@ -89,7 +89,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         int initialBattlefieldPosY = 200;
         int initialBattlefieldPosX = 100;
 
-        cardsDisplayerHeight = 400;
+        cardsDisplayerHeight = 300;
         int sitioDisponible = this.height - cardsDisplayerHeight - initialBattlefieldPosY;
         int sitioX = this.width - initialBattlefieldPosX;
         battlefieldWidth = tilesNumX * tileInitialSize;
@@ -104,12 +104,14 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
         campoBattalla = new ArrayList<>();
 
-        Bitmap tilea = BitmapFactory.decodeResource(this.getResources(),R.drawable.tilea);
-        Bitmap tileb = BitmapFactory.decodeResource(this.getResources(),R.drawable.tileb);
+        Bitmap tilea = BitmapFactory.decodeResource(this.getResources(), R.drawable.tilea);
+        Bitmap tileb = BitmapFactory.decodeResource(this.getResources(), R.drawable.tileb);
+        Bitmap tile_card = BitmapFactory.decodeResource(this.getResources(), R.drawable.cards_back);
 
 
         tilea = Bitmap.createScaledBitmap(tilea, tileInitialSize, tileInitialSize, false);
         tileb = Bitmap.createScaledBitmap(tileb, tileInitialSize, tileInitialSize, false);
+        tile_card = Bitmap.createScaledBitmap(tile_card, this.width, cardsDisplayerHeight, false);
 
         int posX = initialBattlefieldPosX;
         int posY = initialBattlefieldPosY;
@@ -136,7 +138,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             posX = initialBattlefieldPosX;
         }
 
-        posY += tileInitialSize;
+        posY += tileInitialSize / 2;
 
         posX = initialBattlefieldPosX;
         for(int i = 0; i < tilesNumY; i++) {
@@ -152,12 +154,12 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             posY += tileInitialSize;
             posX = initialBattlefieldPosX;
         }
-
+        campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        hideSystemUI();
+        //hideSystemUI();
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = (int)event.getX();
             int y = (int)event.getY();
@@ -183,7 +185,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         }
         Paint p = new Paint();
         p.setColor(Color.RED);
-        canvas.drawRect(0, this.height - 1, 200, this.height, p);
+        /*canvas.drawRect(0, this.height - 200, 200, this.height, p);
+        canvas.drawRect(0, 0, 200, this.height - 250, p);*/
     }
 
     //Funcion setup, se ejecuta al principio del juego y es donde se inicializan todas las cosas
