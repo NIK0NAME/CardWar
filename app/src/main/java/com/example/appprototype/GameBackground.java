@@ -10,6 +10,7 @@ public class GameBackground extends Sprite {
     protected SuperficieJuego gameSurface;
     private long lastDrawNanoTime = -1;
     public int w, h;
+    public boolean selected = false;
 
     public GameBackground(SuperficieJuego gameSurface, Bitmap image, int x, int y, int w, int h) {
         super( 1, 1, image, x, y);

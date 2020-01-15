@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -39,6 +40,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     public List<Sprite> campoBattalla;
     public Context cnt;
     public View v;
+    public List<Sprite> cartas;
 
     // Lista casillas
     // Jugador
@@ -85,8 +87,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             battlefieldHeight;
         int tilesNumX = 6;
         int tilesNumY = 4;
-        int tileInitialSize = 400;
-        int initialBattlefieldPosY = 200;
+        int tileInitialSize = 300;
+        int initialBattlefieldPosY = 150;
         int initialBattlefieldPosX = 100;
 
         cardsDisplayerHeight = 300;
@@ -102,16 +104,21 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
         initialBattlefieldPosX = (this.width - battlefieldWidth) / 2;
 
+        cardsDisplayerHeight = tileInitialSize * 2;
+
         campoBattalla = new ArrayList<>();
+        cartas = new ArrayList<>();
 
         Bitmap tilea = BitmapFactory.decodeResource(this.getResources(), R.drawable.tilea);
         Bitmap tileb = BitmapFactory.decodeResource(this.getResources(), R.drawable.tileb);
         Bitmap tile_card = BitmapFactory.decodeResource(this.getResources(), R.drawable.cards_back);
+        Bitmap tile_card_background = BitmapFactory.decodeResource(this.getResources(), R.drawable.card_background);
 
 
         tilea = Bitmap.createScaledBitmap(tilea, tileInitialSize, tileInitialSize, false);
         tileb = Bitmap.createScaledBitmap(tileb, tileInitialSize, tileInitialSize, false);
         tile_card = Bitmap.createScaledBitmap(tile_card, this.width, cardsDisplayerHeight, false);
+        //tile_card_background = Bitmap.createScaledBitmap(tile_card_background, tileInitialSize, tileInitialSize * 2, false);
 
         int posX = initialBattlefieldPosX;
         int posY = initialBattlefieldPosY;
@@ -155,7 +162,18 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             posX = initialBattlefieldPosX;
         }
         campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
+
+        int cardNum = 10;
+        int tamDisponible = this.width - 20;
+        int initPosCards = 00;
+        int dist = tamDisponible / (cardNum);
+        for(int i = 0; i < cardNum; i++) {
+            cartas.add(new GameBackground(this, tile_card_background, initPosCards, this.height - cardsDisplayerHeight + 15, tileInitialSize, tileInitialSize * 2));
+            initPosCards += dist;
+        }
     }
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -165,9 +183,26 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             int y = (int)event.getY();
 
             Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
+            checkCards(x, y);
+
             return true;
         }
         return false;
+    }
+
+    public void checkCards(int x, int y) {
+        for(int i = cartas.size() - 1; i >= 0; i--) {
+            GameBackground itm = (GameBackground) cartas.get(i);
+            if(x > itm.x && x < itm.x + itm.width && y > itm.y && x < itm.y + itm.height) {
+                if(itm.selected) {
+                    itm.selected = false;
+                    itm.y += 50;
+                }else {
+                    itm.y -= 50;
+                    itm.selected = true;
+                }
+            }
+        }
     }
 
     //Funcion que actualiza el estado de los elementos de la superfice
@@ -180,6 +215,10 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         super.draw(canvas);
         this.backgrund.draw(canvas);
         for(Sprite sp : campoBattalla) {
+            GameBackground itm = (GameBackground) sp;
+            itm.draw(canvas);
+        }
+        for(Sprite sp : cartas) {
             GameBackground itm = (GameBackground) sp;
             itm.draw(canvas);
         }
