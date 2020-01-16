@@ -1,5 +1,8 @@
 package com.example.appprototype;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,19 +29,33 @@ public class CardDisplayer {
     public String backColor = "#347474";
     public List<Sprite> cartas;
 
+    public Context cnt;
 
-    public CardDisplayer(int x, int y, int w, int h) {
+
+    public CardDisplayer(int x, int y, int w, int h, Context cnt) {
         this.position = new Point(x, y);
         this.dimensions = new Point(w, h);
+
+        this.cnt = cnt;
+
+        Bitmap tilea = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.card1);
 
         this.cardsCount = 6;
 
         cartas = new ArrayList<>();
-        int separation = (this.dimensions.x - 10) / this.cardsCount;
-        int initpos = 20;
+        int separation = 180 + (((this.dimensions.x - 80) - ((this.cardsCount) * 180)) / this.cardsCount);
+        int initpos = ((this.dimensions.x) - (separation * cardsCount)) / 2;
+        separation -= (180 - separation) / this.cardsCount;
+
+        int bajator = 0;
         for(int i = 0; i < this.cardsCount; i++) {
-            cartas.add(new GameBackground(null, null, initpos, this.position.y + 10, 180, 240));
+            cartas.add(new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
             initpos += separation;
+            if(i > this.cardsCount / 2 -1) {
+                bajator -= 10;
+            }else {
+                bajator += 10;
+            }
         }
     }
 
@@ -54,18 +71,23 @@ public class CardDisplayer {
         Paint pnt = new Paint();
         pnt.setColor(Color.parseColor(this.backColor));
 
-        //cnv.save();
-        //cnv.rotate(5, 0, 0);
+
 
         cnv.drawRect(this.position.x, this.position.y, this.dimensions.x, this.dimensions.y, pnt);
+        int incliCounter = 20 / cartas.size();
+        int initialCount = 10;
 
         for(int i = cartas.size() - 1; i >= 0; i--) {
             GameBackground itm = (GameBackground) cartas.get(i);
+            cnv.save();
+            cnv.rotate(initialCount, itm.x + 90, itm.y + 120);
+            initialCount -= incliCounter;
             itm.draw(cnv);
+            cnv.restore();
         }
 
         //restore canvas
-        //cnv.restore();
+
     }
 
     public void update() {

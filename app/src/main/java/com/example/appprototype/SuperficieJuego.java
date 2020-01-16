@@ -60,7 +60,6 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         this.getHolder().addCallback(this);
 
 
-
         this.width = width;
         this.height = height;
 
@@ -166,7 +165,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         }
         campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
 
-        this.cardDisplayer = new CardDisplayer(0, this.height  - 400, this.width, this.height);
+        this.cardDisplayer = new CardDisplayer(0, this.height  - 450, this.width, this.height, this.cnt);
 
     }
 
@@ -179,8 +178,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             int x = (int)event.getX();
             int y = (int)event.getY();
 
-            Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
-            checkCards(x, y);
+            //Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
+            //checkCards(x, y);
 
             return true;
         }
