@@ -26,8 +26,8 @@ public class GameBackground extends Sprite {
         if(this.image == null) {
             pnt.setColor(Color.parseColor("#63b7af"));
             pnt.setShadowLayer(1, 5, 5, Color.BLACK);
-            pnt.setStrokeWidth(1);
-
+            pnt.setStyle(Paint.Style.STROKE);
+            pnt.setColor(Color.parseColor("#347474"));
             //canvas.drawRect(x, y, x + this.w, y + this.h, pnt);
             canvas.drawRoundRect(x, y, x + this.w, y + this.h, 6, 6, pnt);
         }else canvas.drawBitmap(bitmap, x, y, null);

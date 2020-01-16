@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +43,14 @@ public class CardDisplayer {
 
         this.cardsCount = 6;
 
-        cartas = new ArrayList<>();
+        this.cartas = new ArrayList<>();
         int separation = 180 + (((this.dimensions.x - 80) - ((this.cardsCount) * 180)) / this.cardsCount);
         int initpos = ((this.dimensions.x) - (separation * cardsCount)) / 2;
         separation -= (180 - separation) / this.cardsCount;
 
         int bajator = 0;
         for(int i = 0; i < this.cardsCount; i++) {
-            cartas.add(new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
+            this.cartas.add(new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
             initpos += separation;
             if(i > this.cardsCount / 2 -1) {
                 bajator -= 10;
@@ -73,21 +74,30 @@ public class CardDisplayer {
 
 
 
-        cnv.drawRect(this.position.x, this.position.y, this.dimensions.x, this.dimensions.y, pnt);
-        int incliCounter = 20 / cartas.size();
+        cnv.drawRoundRect(this.position.x, this.position.y, this.dimensions.x, this.dimensions.y, 50, 50, pnt);
+        int incliCounter = 20 / this.cartas.size();
         int initialCount = 10;
 
-        for(int i = cartas.size() - 1; i >= 0; i--) {
-            GameBackground itm = (GameBackground) cartas.get(i);
+        for(int i = this.cartas.size() - 1; i >= 0; i--) {
+            GameBackground itm = (GameBackground) this.cartas.get(i);
             cnv.save();
             cnv.rotate(initialCount, itm.x + 90, itm.y + 120);
             initialCount -= incliCounter;
             itm.draw(cnv);
             cnv.restore();
         }
-
         //restore canvas
+    }
 
+    public void checkCardSelection(int x, int y) {
+        for(int i = this.cartas.size() - 1; i >= 0; i--) {
+            GameBackground itm = (GameBackground) this.cartas.get(i);
+            if(x > itm.x && x < itm.x + itm.width && y > itm.y && x < itm.y + itm.height) {
+                this.cartas.remove(i);
+                Toast.makeText(this.cnt, "Card " + i + " selected", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
     }
 
     public void update() {

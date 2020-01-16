@@ -66,7 +66,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            this.height += resources.getDimensionPixelSize(resourceId) / 2 - 60;
+            this.height += resources.getDimensionPixelSize(resourceId); /// 2 - 60;
         }
         this.cnt = context;
         this.v = v;
@@ -178,8 +178,9 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             int x = (int)event.getX();
             int y = (int)event.getY();
 
-            //Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
-            //checkCards(x, y);
+            // Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
+            // checkCards(x, y);
+            this.cardDisplayer.checkCardSelection(x, y);
 
             return true;
         }
