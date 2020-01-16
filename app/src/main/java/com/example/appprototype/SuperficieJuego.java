@@ -42,6 +42,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     public View v;
     public List<Sprite> cartas;
 
+    public CardDisplayer cardDisplayer;
+
     // Lista casillas
     // Jugador
     // Escena
@@ -69,6 +71,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         }
         this.cnt = context;
         this.v = v;
+
 
     }
 
@@ -163,14 +166,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         }
         campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
 
-        int cardNum = 10;
-        int tamDisponible = this.width - 20;
-        int initPosCards = 00;
-        int dist = tamDisponible / (cardNum);
-        for(int i = 0; i < cardNum; i++) {
-            cartas.add(new GameBackground(this, tile_card_background, initPosCards, this.height - cardsDisplayerHeight + 15, tileInitialSize, tileInitialSize * 2));
-            initPosCards += dist;
-        }
+        this.cardDisplayer = new CardDisplayer(0, this.height  - 400, this.width, this.height);
+
     }
 
 
@@ -224,6 +221,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         }
         Paint p = new Paint();
         p.setColor(Color.RED);
+
+        this.cardDisplayer.draw(canvas);
         /*canvas.drawRect(0, this.height - 200, 200, this.height, p);
         canvas.drawRect(0, 0, 200, this.height - 250, p);*/
     }

@@ -24,8 +24,9 @@ public class GameBackground extends Sprite {
         Bitmap bitmap = this.image;
         Paint pnt = new Paint();
         if(this.image == null) {
-            pnt.setColor(Color.GREEN);
-            canvas.drawRect(x, y, this.w, this.h, pnt);
+            pnt.setColor(Color.parseColor("#63b7af"));
+            pnt.setShadowLayer(1, 5, 5, Color.BLACK);
+            canvas.drawRect(x, y, x + this.w, y + this.h, pnt);
         }else canvas.drawBitmap(bitmap, x, y, null);
         // Last draw time.
         this.lastDrawNanoTime = System.nanoTime();
