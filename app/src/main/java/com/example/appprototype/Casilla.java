@@ -12,7 +12,7 @@ public class Casilla {
     public String state;
     public Card card = null;
     public boolean selected;
-    // Monster
+    public Monster monster = null;
 
     public Casilla(int x, int y, int w, int h, Bitmap sp) {
         this.x = x;
@@ -27,19 +27,30 @@ public class Casilla {
     public void draw(Canvas cnv) {
         Paint pnt = new Paint();
         cnv.drawBitmap(this.sprite, this.x, this.y, pnt);
-        if(this.card != null) {
-            int differ = this.card.cardSprite.getWidth() - this.w;
-            int charSizeX = this.card.cardSprite.getWidth() - differ - 40;
-            int charSizeY = this.card.cardSprite.getHeight() - differ - 40;
-            int charPosY = charSizeY - this.h;
-            Bitmap bpm = Bitmap.createScaledBitmap(this.card.cardSprite, charSizeX, charSizeY, false);
-            cnv.drawBitmap(bpm, this.x + 20, this.y - (charSizeY / 2) + 35, null);
+        if(this.monster != null) {
+
+            Bitmap bpm = Bitmap.createScaledBitmap(this.monster.sprite, this.monster.w, this.monster.h, false);
+            cnv.drawBitmap(bpm, this.monster.x, this.monster.y, null);
         }
         if(this.selected) {
             pnt.setStyle(Paint.Style.STROKE);
             pnt.setStrokeWidth(3);
             pnt.setColor(Color.parseColor("#FF0000"));
-            cnv.drawRoundRect(this.x, this.y, this.x + this.w, this.y + this.h, 10 ,10, pnt);
+            cnv.drawRoundRect(this.x + 20, this.y + 20, this.x + this.w - 20, this.y + this.h - 20, 10 ,10, pnt);
         }
+    }
+
+    public void setMonster(Monster monster) {
+        this.monster = monster;
+        Bitmap sp = this.monster.sprite;
+        int differ = sp.getWidth() - this.w;
+        int charSizeX = sp.getWidth() - differ - 40;
+        int charSizeY = sp.getHeight() - differ - 40;
+        int charPosY = this.y - (charSizeY / 2) + 35;
+
+        this.monster.x = this.x + 20;
+        this.monster.y = charPosY;
+        this.monster.w = charSizeX;
+        this.monster.h = charSizeY;
     }
 }

@@ -73,7 +73,7 @@ public class Battlefield {
             if(x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
                 if(cs.state.equals("empty")) {
                     cs.state = "full";
-                    cs.card = c;
+                    cs.setMonster(c.monster);
                     return true;
                 }
             }

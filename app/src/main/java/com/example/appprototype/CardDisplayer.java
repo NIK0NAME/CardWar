@@ -65,7 +65,12 @@ public class CardDisplayer {
             if(i % 2 == 0) {
                 cls = "#ff99ff";
             }
-            this.cartas.add(new Card(initpos, this.position.y + 70 - bajator, 180, 240, cls, Math.round((i + 2) / 2), cardSps[i], namess[i]));
+            this.cartas.add(new Card(initpos,
+                    this.position.y + 70 - bajator,
+                    180, 240,
+                    cls, Math.round((i + 2) / 2),
+                    cardSps[i], namess[i],
+                    3, 10));
                     ///new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
             initpos += separation;
             if(i > this.cardsCount / 2 -1) {
@@ -153,8 +158,6 @@ public class CardDisplayer {
                 selDisp = 1;
             }
         }
-
-
         //restore canvas
     }
 
