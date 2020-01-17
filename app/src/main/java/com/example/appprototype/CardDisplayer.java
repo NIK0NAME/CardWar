@@ -32,6 +32,7 @@ public class CardDisplayer {
     public Card selectedCard = null;
     public int separation;
     public Context cnt;
+    public int selDisp = 1;
 
 
     public CardDisplayer(int x, int y, int w, int h, Context cnt) {
@@ -41,10 +42,18 @@ public class CardDisplayer {
         this.cnt = cnt;
 
         Bitmap tilea = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.card1);
+        Bitmap cardSp = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.xeon_concept_art);
+        Bitmap cardSp2 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster1);
+        Bitmap cardSp3 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster2);
+        Bitmap cardSp4 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster3);
+        Bitmap cardSp5 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster4);
+        Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster5);
+
         this.cartas = new ArrayList<>();
 
-        this.cardsCount = 12;
-
+        this.cardsCount = 5;
+        Bitmap [] cardSps = {cardSp5, cardSp3, cardSp3, cardSp4, cardSp3, cardSp5, cardSp6};
+        String [] namess = {"M. DESTRUYER", "EL BICHO", "EL BICHO", "COLGADO", "EL BICHO", "M. DESTRUYER", "ILLHO"};
 
         int separation = 180 + (((this.dimensions.x - 80) - ((this.cardsCount) * 180)) / this.cardsCount);
         int initpos = ((this.dimensions.x) - (separation * cardsCount)) / 2;
@@ -52,7 +61,11 @@ public class CardDisplayer {
         this.separation = separation;
         int bajator = 0;
         for(int i = 0; i < this.cardsCount; i++) {
-            this.cartas.add(new Card(initpos, this.position.y + 70 - bajator, 180, 240, "#9999ff"));
+            String cls = "#ee8572";
+            if(i % 2 == 0) {
+                cls = "#ff99ff";
+            }
+            this.cartas.add(new Card(initpos, this.position.y + 70 - bajator, 180, 240, cls, Math.round((i + 2) / 2), cardSps[i], namess[i]));
                     ///new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
             initpos += separation;
             if(i > this.cardsCount / 2 -1) {
@@ -106,26 +119,38 @@ public class CardDisplayer {
             int incliCounter = 20 / this.cartas.size();
             int initialCount = 10;
 
+            if(this.selectedCard != null) {
+                //this.selectedCard.color = "#ee8572";
+                this.selectedCard = null;
+            }
             Card auxSelection = null;
 
             for(int i = this.cartas.size() - 1; i >= 0; i--) {
                 Card itm = this.cartas.get(i);
                 if(itm.selected) {
-                    auxSelection = itm;
+                    this.selectedCard = itm;
+                    //this.selectedCard.color = "#ff00ff";
                 }else {
                     cnv.save();
-                    //cnv.rotate(initialCount, itm.x + 90, itm.y + 120);
+                    cnv.rotate(initialCount, itm.x + 90, itm.y + 120);
                     initialCount -= incliCounter;
                     itm.draw(cnv);
                     cnv.restore();
                 }
             }
 
-            if(auxSelection != null) {
+            if(this.selectedCard != null) {
                 cnv.save();
-                cnv.translate(0, - 100);
-                auxSelection.draw(cnv);
+                cnv.translate(0, - (50 * selDisp));
+                if(selDisp <= 2) {
+
+                    selDisp++;
+                }
+
+                this.selectedCard.draw(cnv);
                 cnv.restore();
+            }else {
+                selDisp = 1;
             }
         }
 
@@ -149,6 +174,7 @@ public class CardDisplayer {
                 //this.cartas.remove(i);
                 //this.selectedCard = cartas.get(i);
                 this.cartas.get(i).selected = true;
+                selDisp = 1;
                 //Toast.makeText(this.cnt, "Card " + i + " selected", Toast.LENGTH_LONG).show();
                 //calculateCardsPosition();
                 return;

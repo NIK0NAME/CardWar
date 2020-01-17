@@ -66,7 +66,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            //this.height -= resources.getDimensionPixelSize(resourceId) - 25; /// 2 - 60;
+            this.height -= resources.getDimensionPixelSize(resourceId) - 25; /// 2 - 60;
         }
         this.cnt = context;
         this.v = v;
@@ -91,10 +91,10 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         int tilesNumY = 4;
         int tileInitialSize = 300;
         int initialBattlefieldPosY = 150;
-        int initialBattlefieldPosX = 200;
+        int initialBattlefieldPosX = 50;
 
         cardsDisplayerHeight = 350;
-        int sitioDisponible = this.height - cardsDisplayerHeight - initialBattlefieldPosY - 10;
+        int sitioDisponible = this.height - cardsDisplayerHeight - initialBattlefieldPosY;
         int sitioX = this.width - initialBattlefieldPosX;
         battlefieldWidth = tilesNumX * tileInitialSize;
         battlefieldHeight = tilesNumY * tileInitialSize * 2 + 1;

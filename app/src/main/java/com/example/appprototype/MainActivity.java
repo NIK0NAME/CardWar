@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 try {
                     // Sleep.
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch(InterruptedException e)  {
 
                     //Toast.makeText(this, "Si te sale esto, te jodes.", Toast.LENGTH_LONG).show();
