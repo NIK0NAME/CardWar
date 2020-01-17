@@ -31,7 +31,7 @@ public class Battlefield {
             for(int n = 0; n < wBattlefield; n++) {
                 Casilla cs = new Casilla(posX, posY, this.tamCasilla, this.tamCasilla, this.spriteCasilla.get(0));
                 if(i == 0) {
-                    cs.state = "disabled";
+                    //cs.state = "disabled";
                 }
                 this.casillas.add(cs);
 
@@ -64,13 +64,21 @@ public class Battlefield {
         }
     }
 
-    public void comprobarCasilla(int x, int y) {
+    public boolean comprobarCasilla(int x, int y, Card c) {
+        if(c == null) {
+            return false;
+        }
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
-            if(x > this.x && x < this.x + this.w && y > this.y && y < this.y + this.h) {
-                cs.state = "full";
+            if(x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
+                if(cs.state.equals("empty")) {
+                    cs.state = "full";
+                    cs.card = c;
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     public void draw(Canvas canvas){

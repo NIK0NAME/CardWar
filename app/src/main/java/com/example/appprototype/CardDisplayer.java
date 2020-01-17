@@ -51,7 +51,7 @@ public class CardDisplayer {
 
         this.cartas = new ArrayList<>();
 
-        this.cardsCount = 5;
+        this.cardsCount = 7;
         Bitmap [] cardSps = {cardSp5, cardSp3, cardSp3, cardSp4, cardSp3, cardSp5, cardSp6};
         String [] namess = {"M. DESTRUYER", "EL BICHO", "EL BICHO", "COLGADO", "EL BICHO", "M. DESTRUYER", "ILLHO"};
 
@@ -159,10 +159,14 @@ public class CardDisplayer {
     }
 
     public void checkCardSelection(int x, int y) {
-        for(int i = 0; i < this.cartas.size(); i++) {
+        /*for(int i = 0; i < this.cartas.size(); i++) {
             this.cartas.get(i).selected = false;
             this.selectedCard = null;
+        }*/
+        if(this.selectedCard != null) {
+            this.selectedCard.selected = false;
         }
+
         for(int i = 0; i < this.cartas.size(); i++) {
             Card itm = this.cartas.get(i);
             int xPos = itm.x + (180 -  this.separation);
@@ -184,9 +188,16 @@ public class CardDisplayer {
                 //this.selectedCard = null;
             }
         }
+        this.selectedCard = null;
     }
 
     public void update() {
 
+    }
+
+    public void removeSelected() {
+        this.cartas.remove(this.selectedCard);
+        this.selectedCard = null;
+        this.calculateCardsPosition();
     }
 }
