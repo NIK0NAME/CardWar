@@ -156,6 +156,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             // Toast.makeText(this.cnt, "Click done in " + x + "x" + y, Toast.LENGTH_LONG).show();
             // checkCards(x, y);
             this.cardDisplayer.checkCardSelection(x, y);
+            this.battlefield2.mostrarCasillaDisponible(this.cardDisplayer.selectedCard);
 
             return true;
         }

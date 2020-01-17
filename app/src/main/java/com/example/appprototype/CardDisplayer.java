@@ -161,6 +161,7 @@ public class CardDisplayer {
     public void checkCardSelection(int x, int y) {
         for(int i = 0; i < this.cartas.size(); i++) {
             this.cartas.get(i).selected = false;
+            this.selectedCard = null;
         }
         for(int i = 0; i < this.cartas.size(); i++) {
             Card itm = this.cartas.get(i);
@@ -174,6 +175,7 @@ public class CardDisplayer {
                 //this.cartas.remove(i);
                 //this.selectedCard = cartas.get(i);
                 this.cartas.get(i).selected = true;
+                this.selectedCard = this.cartas.get(i);
                 selDisp = 1;
                 //Toast.makeText(this.cnt, "Card " + i + " selected", Toast.LENGTH_LONG).show();
                 //calculateCardsPosition();

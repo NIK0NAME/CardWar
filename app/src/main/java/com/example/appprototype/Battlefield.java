@@ -29,8 +29,11 @@ public class Battlefield {
         int posY = this.y;
         for(int i = 0; i < hBattlefield; i++) {
             for(int n = 0; n < wBattlefield; n++) {
-
-                this.casillas.add(new Casilla(posX, posY, this.tamCasilla, this.tamCasilla, this.spriteCasilla.get(0)));
+                Casilla cs = new Casilla(posX, posY, this.tamCasilla, this.tamCasilla, this.spriteCasilla.get(0));
+                if(i == 0) {
+                    cs.state = "disabled";
+                }
+                this.casillas.add(cs);
 
                 posX += this.tamCasilla;
             }
@@ -42,11 +45,24 @@ public class Battlefield {
     public void addCarta(Card c){
 
     }
-    public void mostrarCasillaDisponible(){
+    public void mostrarCasillaDisponible(Card c){
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
 
+            cs.selected = false;
+
+        }
+        if(c != null) {
+            for(int i = 0; i < this.casillas.size(); i++) {
+                Casilla cs = this.casillas.get(i);
+                if(cs.state.equals("empty")) {
+                    cs.selected = true;
+                }else {
+                    cs.selected = false;
+                }
+            }
+        }
     }
-
-
 
     public void draw(Canvas canvas){
         for(int i = 0; i < this.casillas.size(); i++) {
