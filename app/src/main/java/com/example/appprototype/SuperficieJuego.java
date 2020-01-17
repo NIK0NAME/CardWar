@@ -66,7 +66,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            this.height += resources.getDimensionPixelSize(resourceId); /// 2 - 60;
+            //this.height -= resources.getDimensionPixelSize(resourceId) - 25; /// 2 - 60;
         }
         this.cnt = context;
         this.v = v;
@@ -91,10 +91,10 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         int tilesNumY = 4;
         int tileInitialSize = 300;
         int initialBattlefieldPosY = 150;
-        int initialBattlefieldPosX = 100;
+        int initialBattlefieldPosX = 200;
 
-        cardsDisplayerHeight = 300;
-        int sitioDisponible = this.height - cardsDisplayerHeight - initialBattlefieldPosY;
+        cardsDisplayerHeight = 350;
+        int sitioDisponible = this.height - cardsDisplayerHeight - initialBattlefieldPosY - 10;
         int sitioX = this.width - initialBattlefieldPosX;
         battlefieldWidth = tilesNumX * tileInitialSize;
         battlefieldHeight = tilesNumY * tileInitialSize * 2 + 1;
@@ -106,7 +106,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
         initialBattlefieldPosX = (this.width - battlefieldWidth) / 2;
 
-        cardsDisplayerHeight = tileInitialSize * 2;
+        //cardsDisplayerHeight = tileInitialSize * 2;
 
         campoBattalla = new ArrayList<>();
         cartas = new ArrayList<>();
@@ -163,9 +163,9 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             posY += tileInitialSize;
             posX = initialBattlefieldPosX;
         }
-        campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
+        //campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
 
-        this.cardDisplayer = new CardDisplayer(0, this.height  - 450, this.width, this.height, this.cnt);
+        this.cardDisplayer = new CardDisplayer(0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight, this.cnt);
 
     }
 
@@ -210,6 +210,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
         this.backgrund.draw(canvas);
         for(Sprite sp : campoBattalla) {
             GameBackground itm = (GameBackground) sp;

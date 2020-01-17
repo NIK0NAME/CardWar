@@ -18,19 +18,24 @@ public class GameBackground extends Sprite {
         this.gameSurface = gameSurface;
         this.w = w;
         this.h = h;
+        if(image == null) {
+            width = w;
+            height = h;
+        }
     }
 
     public void draw(Canvas canvas)  {
         Bitmap bitmap = this.image;
         Paint pnt = new Paint();
+        pnt.setShadowLayer(1, 5, 5, Color.rgb(191, 191, 191));
         if(this.image == null) {
             pnt.setColor(Color.parseColor("#63b7af"));
-            pnt.setShadowLayer(1, 5, 5, Color.BLACK);
-            pnt.setStyle(Paint.Style.STROKE);
-            pnt.setColor(Color.parseColor("#347474"));
+
+            //pnt.setStyle(Paint.Style.STROKE);
+            //pnt.setColor(Color.parseColor("#347474"));
             //canvas.drawRect(x, y, x + this.w, y + this.h, pnt);
             canvas.drawRoundRect(x, y, x + this.w, y + this.h, 6, 6, pnt);
-        }else canvas.drawBitmap(bitmap, x, y, null);
+        }else canvas.drawBitmap(bitmap, x, y, pnt);
         // Last draw time.
         this.lastDrawNanoTime = System.nanoTime();
     }
