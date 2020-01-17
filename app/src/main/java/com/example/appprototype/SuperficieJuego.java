@@ -88,7 +88,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             battlefieldWidth,
             battlefieldHeight;
         int tilesNumX = 6;
-        int tilesNumY = 4;
+        int tilesNumY = 3;
         int tileInitialSize = 300;
         int initialBattlefieldPosY = 150;
         int initialBattlefieldPosX = 50;
@@ -112,14 +112,16 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         cartas = new ArrayList<>();
 
         Bitmap tilea = BitmapFactory.decodeResource(this.getResources(), R.drawable.tilea);
-        Bitmap tileb = BitmapFactory.decodeResource(this.getResources(), R.drawable.tileb);
+        Bitmap tileb = BitmapFactory.decodeResource(this.getResources(), R.drawable.norm_battlefield_tile);
         Bitmap tile_card = BitmapFactory.decodeResource(this.getResources(), R.drawable.cards_back);
         Bitmap tile_card_background = BitmapFactory.decodeResource(this.getResources(), R.drawable.card_background);
+        Bitmap end_tile = BitmapFactory.decodeResource(this.getResources(), R.drawable.end_battlefield_tile);
 
 
         tilea = Bitmap.createScaledBitmap(tilea, tileInitialSize, tileInitialSize, false);
         tileb = Bitmap.createScaledBitmap(tileb, tileInitialSize, tileInitialSize, false);
         tile_card = Bitmap.createScaledBitmap(tile_card, this.width, cardsDisplayerHeight, false);
+        end_tile = Bitmap.createScaledBitmap(end_tile, tileInitialSize, tileInitialSize * 2, false);
         //tile_card_background = Bitmap.createScaledBitmap(tile_card_background, tileInitialSize, tileInitialSize * 2, false);
 
         int posX = initialBattlefieldPosX;
@@ -127,18 +129,10 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
 
         for(int i = 0; i < tilesNumY; i++) {
             for(int n = 0; n < tilesNumX; n++) {
-                if(i % 2 == 0) {
-                    if(n % 2 == 0) {
-                        campoBattalla.add(new GameBackground(this, tilea, posX, posY, tileInitialSize, tileInitialSize));
-                    }else {
-                        campoBattalla.add(new GameBackground(this, tileb, posX, posY, tileInitialSize, tileInitialSize));
-                    }
+                if(i == tilesNumY - 1) {
+                    campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
                 }else {
-                    if(n % 2 != 0) {
-                        campoBattalla.add(new GameBackground(this, tilea, posX, posY, tileInitialSize, tileInitialSize));
-                    }else {
-                        campoBattalla.add(new GameBackground(this, tileb, posX, posY, tileInitialSize, tileInitialSize));
-                    }
+                    campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
                 }
                 posX += tileInitialSize;
 
@@ -147,17 +141,23 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
             posX = initialBattlefieldPosX;
         }
 
-        posY += tileInitialSize / 2;
+        posY += tileInitialSize + 100;
 
         posX = initialBattlefieldPosX;
         for(int i = 0; i < tilesNumY; i++) {
             for(int n = 0; n < tilesNumX; n++) {
-                if(i % 2 ==  0 || n % 2 != 0) {
-                    campoBattalla.add(new GameBackground(this, tilea, posX, posY, tileInitialSize, tileInitialSize));
+                if(i == tilesNumY - 1 && (n == 0 || tilesNumX - 1 == n)) {
+                    posX += tileInitialSize;
+                    continue;
+
                 }else {
-                    campoBattalla.add(new GameBackground(this, tileb, posX, posY, tileInitialSize, tileInitialSize));
+                    if(i == tilesNumY - 1) {
+                        campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
+                    }else {
+                        campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
+                    }
+                    posX += tileInitialSize;
                 }
-                posX += tileInitialSize;
 
             }
             posY += tileInitialSize;
