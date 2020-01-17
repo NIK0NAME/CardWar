@@ -43,6 +43,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
     public List<Sprite> cartas;
 
     public CardDisplayer cardDisplayer;
+    public Battlefield battlefield1, battlefield2;
 
     // Lista casillas
     // Jugador
@@ -97,11 +98,11 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         int sitioDisponible = this.height - cardsDisplayerHeight - initialBattlefieldPosY;
         int sitioX = this.width - initialBattlefieldPosX;
         battlefieldWidth = tilesNumX * tileInitialSize;
-        battlefieldHeight = tilesNumY * tileInitialSize * 2 + 1;
+        battlefieldHeight = tilesNumY * tileInitialSize * 2 + (tileInitialSize * 3);
         while(battlefieldWidth > sitioX || battlefieldHeight > sitioDisponible) {
             tileInitialSize--;
             battlefieldWidth = tilesNumX * tileInitialSize;
-            battlefieldHeight = tilesNumY * tileInitialSize * 2;
+            battlefieldHeight = tilesNumY * tileInitialSize * 2 + (tileInitialSize * 3);
         }
 
         initialBattlefieldPosX = (this.width - battlefieldWidth) / 2;
@@ -124,47 +125,21 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         end_tile = Bitmap.createScaledBitmap(end_tile, tileInitialSize, tileInitialSize * 2, false);
         //tile_card_background = Bitmap.createScaledBitmap(tile_card_background, tileInitialSize, tileInitialSize * 2, false);
 
-        int posX = initialBattlefieldPosX;
-        int posY = initialBattlefieldPosY;
+        List<Bitmap> catillaSp = new ArrayList<>();
+        catillaSp.add(end_tile);
 
-        for(int i = 0; i < tilesNumY; i++) {
-            for(int n = 0; n < tilesNumX; n++) {
-                if(i == tilesNumY - 1) {
-                    campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
-                }else {
-                    campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
-                }
-                posX += tileInitialSize;
-
-            }
-            posY += tileInitialSize;
-            posX = initialBattlefieldPosX;
-        }
-
-        posY += tileInitialSize + 100;
-
-        posX = initialBattlefieldPosX;
-        for(int i = 0; i < tilesNumY; i++) {
-            for(int n = 0; n < tilesNumX; n++) {
-                if(i == tilesNumY - 1 && (n == 0 || tilesNumX - 1 == n)) {
-                    posX += tileInitialSize;
-                    continue;
-
-                }else {
-                    if(i == tilesNumY - 1) {
-                        campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
-                    }else {
-                        campoBattalla.add(new GameBackground(this, end_tile, posX, posY, tileInitialSize, tileInitialSize));
-                    }
-                    posX += tileInitialSize;
-                }
-
-            }
-            posY += tileInitialSize;
-            posX = initialBattlefieldPosX;
-        }
-        //campoBattalla.add(new GameBackground(this, tile_card, 0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight));
-
+        this.battlefield1 = new Battlefield(initialBattlefieldPosX,
+                initialBattlefieldPosY,
+                battlefieldWidth,
+                battlefieldHeight,
+                tileInitialSize,
+                catillaSp);
+        this.battlefield2 = new Battlefield(initialBattlefieldPosX,
+                initialBattlefieldPosY + (4 * tileInitialSize) + tileInitialSize / 2,
+                battlefieldWidth,
+                battlefieldHeight,
+                tileInitialSize,
+                catillaSp);
         this.cardDisplayer = new CardDisplayer(0, this.height - cardsDisplayerHeight, this.width, cardsDisplayerHeight, this.cnt);
 
     }
@@ -212,10 +187,8 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         super.draw(canvas);
 
         this.backgrund.draw(canvas);
-        for(Sprite sp : campoBattalla) {
-            GameBackground itm = (GameBackground) sp;
-            itm.draw(canvas);
-        }
+        this.battlefield1.draw(canvas);
+        this.battlefield2.draw(canvas);
         for(Sprite sp : cartas) {
             GameBackground itm = (GameBackground) sp;
             itm.draw(canvas);
@@ -244,19 +217,7 @@ public class SuperficieJuego extends SurfaceView implements SurfaceHolder.Callba
         this.gameThread.start();
     }
 
-    public void makeScreenUIgoFuckAway() {
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
-        this.getRootView().setSystemUiVisibility(uiOptions);
-    }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            //hideSystemUI();
-        }
-    }
 
     private void hideSystemUI() {
         // Enables regular immersive mode.

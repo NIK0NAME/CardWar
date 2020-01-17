@@ -52,7 +52,7 @@ public class GameThread extends Thread {
 
             }
             startTime = System.nanoTime();
-            System.out.print(".");
+            //System.out.print(".");
         }
     }
 
