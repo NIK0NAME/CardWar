@@ -64,6 +64,15 @@ public class Battlefield {
         }
     }
 
+    public void comprobarCasilla(int x, int y) {
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+            if(x > this.x && x < this.x + this.w && y > this.y && y < this.y + this.h) {
+                cs.state = "full";
+            }
+        }
+    }
+
     public void draw(Canvas canvas){
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);

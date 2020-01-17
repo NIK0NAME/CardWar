@@ -121,7 +121,7 @@ public class CardDisplayer {
 
             if(this.selectedCard != null) {
                 //this.selectedCard.color = "#ee8572";
-                this.selectedCard = null;
+                //this.selectedCard = null;
             }
             Card auxSelection = null;
 
@@ -171,7 +171,7 @@ public class CardDisplayer {
                 xPos = itm.x;
                 wSize = 180;
             }
-            if(x > xPos && x < xPos + wSize && y > itm.y && x < itm.y + itm.h) {
+            if(x > xPos && x < xPos + wSize && y > itm.y && y < itm.y + itm.h) {
                 //this.cartas.remove(i);
                 //this.selectedCard = cartas.get(i);
                 this.cartas.get(i).selected = true;
