@@ -17,6 +17,8 @@ public class Card {
     public boolean selected;
     public String color;
     public Monster monster;
+    public Map<String, Integer> atributs;
+    public Map<String, Integer> counters;
 
     public Card(int x, int y, int w, int h, String color, int lvl, Bitmap sprite, String name, int damage, int life) {
         this.x = x;
