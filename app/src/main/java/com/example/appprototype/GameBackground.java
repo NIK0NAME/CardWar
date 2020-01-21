@@ -25,7 +25,6 @@ public class GameBackground extends Sprite {
     }
 
     public void draw(Canvas canvas)  {
-        Bitmap bitmap = this.image;
         Paint pnt = new Paint();
         pnt.setShadowLayer(1, 5, 5, Color.rgb(191, 191, 191));
         if(this.image == null) {
@@ -35,7 +34,10 @@ public class GameBackground extends Sprite {
             //pnt.setColor(Color.parseColor("#347474"));
             //canvas.drawRect(x, y, x + this.w, y + this.h, pnt);
             canvas.drawRoundRect(x, y, x + this.w, y + this.h, 6, 6, pnt);
-        }else canvas.drawBitmap(bitmap, x, y, pnt);
+        }else {
+            Bitmap bitmap = Bitmap.createScaledBitmap(this.image, this.w, this.h, false);
+            canvas.drawBitmap(bitmap, x, y, pnt);
+        }
         // Last draw time.
         this.lastDrawNanoTime = System.nanoTime();
     }

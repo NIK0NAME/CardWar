@@ -18,7 +18,7 @@ public class Battlefield {
         this.h = h;
         this.tamCasilla = tamCasilla;
         this.spriteCasilla = spriteCasilla;
-        this.wBattlefield = 6;
+        this.wBattlefield = 5;
         this.hBattlefield = 3;
         this.casillas = new ArrayList<>();
         this.inicializarCampo();
@@ -45,6 +45,11 @@ public class Battlefield {
     public void addCarta(Card c){
 
     }
+
+    public void addMonster(int pos, Monster m) {
+        this.casillas.get(pos).setMonster(m);
+    }
+
     public void mostrarCasillaDisponible(Card c){
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);

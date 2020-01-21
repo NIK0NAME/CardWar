@@ -33,6 +33,7 @@ public class CardDisplayer {
     public int separation;
     public Context cnt;
     public int selDisp = 1;
+    public GameBackground finTurno;
 
 
     public CardDisplayer(int x, int y, int w, int h, Context cnt) {
@@ -48,10 +49,13 @@ public class CardDisplayer {
         Bitmap cardSp4 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster3);
         Bitmap cardSp5 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster4);
         Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster5);
+        Bitmap btnOk = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.btn_ok);
 
         this.cartas = new ArrayList<>();
 
-        this.cardsCount = 7;
+        this.finTurno = new GameBackground(null, btnOk, w - 220, y - 50, 200, 100);
+
+        this.cardsCount = 5;
         Bitmap [] cardSps = {cardSp5, cardSp3, cardSp3, cardSp4, cardSp3, cardSp5, cardSp6};
         String [] namess = {"M. DESTRUYER", "EL BICHO", "EL BICHO", "COLGADO", "EL BICHO", "M. DESTRUYER", "ILLHO"};
 
@@ -118,6 +122,8 @@ public class CardDisplayer {
         int w = this.position.x + this.dimensions.x;
         int h = this.position.y + this.dimensions.y;
         cnv.drawRoundRect(this.position.x, this.position.y, w, h, 10, 10, pnt);
+
+        this.finTurno.draw(cnv);
 
         if(this.cartas.size() > 0) {
 

@@ -23,13 +23,14 @@ public class RunSceene {
         this.w = w;
         this.h = h;
         this.initializeGame();
+        this.sceeneState = "initialize";
     }
 
     public void initializeGame() {
         int cardsDisplayerHeight,
                 battlefieldWidth,
                 battlefieldHeight;
-        int tilesNumX = 6;
+        int tilesNumX = 5;
         int tilesNumY = 3;
         int tileInitialSize = 300;
         int initialBattlefieldPosY = 150;
@@ -70,10 +71,26 @@ public class RunSceene {
                 catillaSp);
         this.cardDisplayer = new CardDisplayer(0, this.h - cardsDisplayerHeight, this.w, cardsDisplayerHeight, this.cnt);
 
+        spawnEnemies();
     }
+
+    // ronda begin
+    // spawn enemies
+    // get carta
+    // fin turno
+    // rinda fin cuando no hay enemigos
+    // turno termina cuando decide el jugador
 
     public void update() {
 
+    }
+
+    public void spawnEnemies() {
+        Bitmap mon = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster2);
+        campoEnemigo.addMonster(0, new Monster(mon, "beast", 1, "monstr", 2, 5));
+        campoEnemigo.addMonster(3, new Monster(mon, "beast", 1, "monstr", 2, 5));
+        campoEnemigo.addMonster(14, new Monster(mon, "beast", 1, "monstr", 2, 5));
+        campoEnemigo.addMonster(7, new Monster(mon, "beast", 1, "monstr", 2, 5));
     }
 
     public void draw(Canvas cnv) {
