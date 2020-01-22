@@ -22,6 +22,7 @@ public class Monster {
     public int damage;
     public int life;
     public String state; // ready, attack,
+    public int animTimeDamage = 5;
 
     public Monster(Bitmap sp, String type, int lvl, String name, int damage, int life) {
         this.sprite = sp;
@@ -53,6 +54,22 @@ public class Monster {
                 this.frameCount = 0;
             }
         }
+    }
+
+    public void takeDamage(Monster m) {
+
+    }
+
+    public void attack() {
+
+    }
+
+    public void die() {
+
+    }
+
+    public void spawn() {
+
     }
 
     public void draw(Canvas cnv) {

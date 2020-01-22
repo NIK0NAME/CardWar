@@ -89,17 +89,32 @@ public class RunSceene {
     public void primerTurnoAliado() {
         this.sceeneState = "finTurnoAliado";
         this.cardDisplayer.addCard();
+        this.campoAliado.readyToRound();
+        this.round++;
     }
 
     public void primerTurnoEnemigo() {
-        Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster2);
-        Random rnd = new Random();
-        for(int i = 0; i < 4; i++) {
-            Monster m = new Monster(cardSp6, "monster", 3, "jesus", rnd.nextInt(6), rnd.nextInt(3));
-            this.campoEnemigo.addCarta(m, rnd.nextInt(this.campoEnemigo.casillas.size() - 1));
-        }
+        final Context cntt = this.cnt;
+        final Battlefield camp = this.campoEnemigo;
+        Thread h = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap cardSp6 = BitmapFactory.decodeResource(cntt.getResources(), R.drawable.monster2);
+                Random rnd = new Random();
+                for(int i = 0; i < 4; i++) {
+                    Monster m = new Monster(cardSp6, "monster", 3, "jesus", rnd.nextInt(6), rnd.nextInt(3));
+                    camp.addCarta(m, rnd.nextInt(camp.casillas.size() - 1));
+                    try {
+                        Thread.sleep(300);
+                    }catch (Exception ex) {
 
-        primerTurnoAliado();
+                    }
+                }
+
+                primerTurnoAliado();
+            }
+        });
+        h.start();
     }
 
     public void stateMachine() {

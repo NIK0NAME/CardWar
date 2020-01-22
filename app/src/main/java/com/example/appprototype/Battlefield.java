@@ -109,6 +109,16 @@ public class Battlefield {
         }
     }
 
+    public void readyToRound() {
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+
+            if(cs.monster != null) {
+                cs.monster.state = "attack";
+            }
+        }
+    }
+
     public boolean cmporbarCarta(int x, int y, Battlefield campoAliado) {
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
@@ -131,11 +141,17 @@ public class Battlefield {
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
             if(x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
-                if(cs.state.equals("full")) {
+                if(cs.state.equals("full") && campoAliado.selCasilla.monster.state.equals("attack")) {
+                    campoAliado.selCasilla.monster.state = "ready";
                     cs.monster.life -= campoAliado.selCasilla.monster.damage;
+                    campoAliado.selCasilla.monster.life -= cs.monster.damage;
                     if(cs.monster.life <= 0) {
                         cs.monster = null;
                         cs.state = "empty";
+                    }
+                    if(campoAliado.selCasilla.monster.life <= 0) {
+                        campoAliado.selCasilla.monster = null;
+                        campoAliado.selCasilla.state = "empty";
                     }
                     return true;
                 }

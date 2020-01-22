@@ -36,6 +36,16 @@ public class Casilla {
         }
         //  Draw the monster
         if(this.monster != null) {
+
+            if(this.monster.state.equals("attack")) {
+                pnt.setStyle(Paint.Style.FILL);
+
+                pnt.setColor(Color.rgb( 52, 152, 219));
+                pnt.setAlpha(125);
+                //pnt.setStrokeWidth(4);
+                cnv.drawRoundRect(this.x + 18, this.y + 18, this.x + this.w - 18, this.y + this.h - 18, 10 ,10, pnt);
+            }
+
             this.monster.draw(cnv);
         }
 
