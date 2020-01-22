@@ -27,16 +27,24 @@ public class Casilla {
     public void draw(Canvas cnv) {
         Paint pnt = new Paint();
         cnv.drawBitmap(this.sprite, this.x, this.y, pnt);
-        if(this.monster != null) {
-
-            Bitmap bpm = Bitmap.createScaledBitmap(this.monster.sprite, this.monster.w, this.monster.h, false);
-            cnv.drawBitmap(bpm, this.monster.x, this.monster.y, null);
-        }
+        //  Draw selected rect
         if(this.selected) {
             pnt.setStyle(Paint.Style.STROKE);
             pnt.setStrokeWidth(3);
             pnt.setColor(Color.parseColor("#FF0000"));
             cnv.drawRoundRect(this.x + 20, this.y + 20, this.x + this.w - 20, this.y + this.h - 20, 10 ,10, pnt);
+        }
+        //  Draw the monster
+        if(this.monster != null) {
+            this.monster.draw(cnv);
+        }
+
+        //  Life counter
+    }
+
+    public void update() {
+        if(this.monster != null) {
+            this.monster.changeAnimFrame();
         }
     }
 

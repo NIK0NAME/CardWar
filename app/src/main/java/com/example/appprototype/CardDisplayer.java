@@ -10,6 +10,7 @@ import android.graphics.Point;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CardDisplayer {
@@ -33,6 +34,7 @@ public class CardDisplayer {
     public int separation;
     public Context cnt;
     public int selDisp = 1;
+    public int mana = 5;
 
 
     public CardDisplayer(int x, int y, int w, int h, Context cnt) {
@@ -41,18 +43,30 @@ public class CardDisplayer {
 
         this.cnt = cnt;
 
-        Bitmap tilea = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.card1);
-        Bitmap cardSp = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.xeon_concept_art);
-        Bitmap cardSp2 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster1);
         Bitmap cardSp3 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster2);
         Bitmap cardSp4 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster3);
         Bitmap cardSp5 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster4);
         Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster5);
 
+        Bitmap idl1 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__000);
+        Bitmap idl2 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__001);
+        Bitmap idl3 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__002);
+        Bitmap idl4 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__003);
+        Bitmap idl5 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__004);
+        Bitmap idl6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__005);
+        Bitmap idl7 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__006);
+        Bitmap idl8 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__007);
+        Bitmap idl9 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__008);
+        Bitmap idl10 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__009);
+
+        Bitmap m4idle1 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster4_idle_1);
+
         this.cartas = new ArrayList<>();
 
-        this.cardsCount = 7;
+        this.cardsCount = 5;
         Bitmap [] cardSps = {cardSp5, cardSp3, cardSp3, cardSp4, cardSp3, cardSp5, cardSp6};
+        Bitmap [] firstIdle = {idl1, idl2, idl3, idl4, idl5, idl6, idl7, idl8, idl9, idl10};
+        Bitmap [] m4idle = {m4idle1, cardSp5, cardSp5, cardSp5, m4idle1, m4idle1};
         String [] namess = {"M. DESTRUYER", "EL BICHO", "EL BICHO", "COLGADO", "EL BICHO", "M. DESTRUYER", "ILLHO"};
 
         int separation = 180 + (((this.dimensions.x - 80) - ((this.cardsCount) * 180)) / this.cardsCount);
@@ -65,12 +79,20 @@ public class CardDisplayer {
             if(i % 2 == 0) {
                 cls = "#ff99ff";
             }
-            this.cartas.add(new Card(initpos,
+            Card crd = new Card(initpos,
                     this.position.y + 70 - bajator,
                     180, 240,
                     cls, Math.round((i + 2) / 2),
                     cardSps[i], namess[i],
-                    3, 10));
+                    3, 10);
+            if(i == 0) {
+                crd.monster.addAnimation("idle", new ArrayList<Bitmap>(Arrays.asList(m4idle)));
+                crd.monster.setAnimation("idle");
+            }else if (i == 1) {
+                crd.monster.addAnimation("idle", new ArrayList<Bitmap>(Arrays.asList(firstIdle)));
+                crd.monster.setAnimation("idle");
+            }
+            this.cartas.add(crd);
                     ///new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
             initpos += separation;
             if(i > this.cardsCount / 2 -1) {
@@ -119,6 +141,13 @@ public class CardDisplayer {
         int h = this.position.y + this.dimensions.y;
         cnv.drawRoundRect(this.position.x, this.position.y, w, h, 10, 10, pnt);
 
+        Paint manaPaint = new Paint();
+        manaPaint.setColor(Color.parseColor("#3498db"));
+        int circSize = 100;
+        int circX = this.position.x + 50;
+        int circY = this.position.y - 50;
+        cnv.drawRoundRect(circX, circY, circX + circSize, circY + circSize, 20 ,20, manaPaint);
+
         if(this.cartas.size() > 0) {
 
             int incliCounter = 20 / this.cartas.size();
@@ -158,6 +187,7 @@ public class CardDisplayer {
                 selDisp = 1;
             }
         }
+
         //restore canvas
     }
 

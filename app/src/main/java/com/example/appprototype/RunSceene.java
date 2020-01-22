@@ -22,6 +22,7 @@ public class RunSceene {
         this.cnt = cnt;
         this.w = w;
         this.h = h;
+        this.sceeneState = "initialize";
         this.initializeGame();
     }
 
@@ -70,10 +71,32 @@ public class RunSceene {
                 catillaSp);
         this.cardDisplayer = new CardDisplayer(0, this.h - cardsDisplayerHeight, this.w, cardsDisplayerHeight, this.cnt);
 
+        this.sceeneState = "primerTurnoRondaAliado";
+
     }
 
     public void update() {
+        //stateMachine();
+        this.campoAliado.update();
+    }
 
+    public void primerTurnoAliado() {
+        Thread h = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //add card
+                //
+            }
+        });
+    }
+
+    public void stateMachine() {
+        switch (this.sceeneState) {
+            case "primerTurnoRondaAliado": break;
+            case "primerTurnoRondaEnemigo": break;
+            case "turnoRondaAliado": break;
+            case "turnoRondaEnemigo": break;
+        }
     }
 
     public void draw(Canvas cnv) {

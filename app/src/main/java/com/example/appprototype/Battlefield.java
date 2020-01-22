@@ -45,13 +45,7 @@ public class Battlefield {
     public void addCarta(Card c){
 
     }
-    public void mostrarCasillaDisponible(Card c){
-        for(int i = 0; i < this.casillas.size(); i++) {
-            Casilla cs = this.casillas.get(i);
-
-            cs.selected = false;
-
-        }
+    public void mostrarCasillaDisponible(Card c) {
         if(c != null) {
             for(int i = 0; i < this.casillas.size(); i++) {
                 Casilla cs = this.casillas.get(i);
@@ -65,7 +59,21 @@ public class Battlefield {
     }
 
     public boolean comprobarCasilla(int x, int y, Card c) {
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+
+            cs.selected = false;
+        }
         if(c == null) {
+            for(int i = 0; i < this.casillas.size(); i++) {
+                Casilla cs = this.casillas.get(i);
+                if (x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
+                    if (cs.state.equals("full")) {
+                        cs.selected = true;
+                        return false;
+                    }
+                }
+            }
             return false;
         }
         for(int i = 0; i < this.casillas.size(); i++) {
@@ -79,6 +87,13 @@ public class Battlefield {
             }
         }
         return false;
+    }
+
+    public void update() {
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+            cs.update();
+        }
     }
 
     public void draw(Canvas canvas){
