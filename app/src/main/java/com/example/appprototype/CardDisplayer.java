@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class CardDisplayer {
 
@@ -92,6 +94,8 @@ public class CardDisplayer {
                 crd.monster.addAnimation("idle", new ArrayList<Bitmap>(Arrays.asList(firstIdle)));
                 crd.monster.setAnimation("idle");
             }
+            Random rnd = new Random();
+            crd.mana = rnd.nextInt(6);
             this.cartas.add(crd);
                     ///new GameBackground(null, null, initpos, this.position.y + 70 - bajator, 180, 240));
             initpos += separation;
@@ -144,9 +148,13 @@ public class CardDisplayer {
         Paint manaPaint = new Paint();
         manaPaint.setColor(Color.parseColor("#3498db"));
         int circSize = 100;
-        int circX = this.position.x + 50;
+        int circX = this.position.x + 30;
         int circY = this.position.y - 50;
         cnv.drawRoundRect(circX, circY, circX + circSize, circY + circSize, 20 ,20, manaPaint);
+
+        pnt.setTextSize(80);
+        pnt.setColor(Color.parseColor("#ffffff"));
+        cnv.drawText("" + this.mana, circX + 30, circY  + 80, pnt);
 
         if(this.cartas.size() > 0) {
 

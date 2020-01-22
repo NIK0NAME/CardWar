@@ -24,7 +24,7 @@ public class GameBackground extends Sprite {
         }
     }
 
-    public void draw(Canvas canvas)  {
+    public void draw(Canvas canvas) {
         Bitmap bitmap = this.image;
         Paint pnt = new Paint();
         pnt.setShadowLayer(1, 5, 5, Color.rgb(191, 191, 191));

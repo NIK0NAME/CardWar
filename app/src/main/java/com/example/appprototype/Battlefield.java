@@ -58,13 +58,13 @@ public class Battlefield {
         }
     }
 
-    public boolean comprobarCasilla(int x, int y, Card c) {
+    public boolean comprobarCasilla(int x, int y, CardDisplayer c) {
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
 
             cs.selected = false;
         }
-        if(c == null) {
+        if(c.selectedCard == null) {
             for(int i = 0; i < this.casillas.size(); i++) {
                 Casilla cs = this.casillas.get(i);
                 if (x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
@@ -79,9 +79,10 @@ public class Battlefield {
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
             if(x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
-                if(cs.state.equals("empty")) {
+                if(cs.state.equals("empty") && c.mana >= c.selectedCard.mana) {
                     cs.state = "full";
-                    cs.setMonster(c.monster);
+                    cs.setMonster(c.selectedCard.monster);
+                    c.mana -= c.selectedCard.mana;
                     return true;
                 }
             }

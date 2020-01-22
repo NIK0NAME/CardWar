@@ -19,6 +19,7 @@ public class Card {
     public Monster monster;
     public Map<String, Integer> atributs;
     public Map<String, Integer> counters;
+    public int mana = 4;
 
     public Card(int x, int y, int w, int h, String color, int lvl, Bitmap sprite, String name, int damage, int life) {
         this.x = x;
@@ -44,30 +45,60 @@ public class Card {
         //pnt.setStyle(Paint.Style.STROKE);
         //pnt.setColor(Color.parseColor("#347474"));
         //canvas.drawRect(x, y, x + this.w, y + this.h, pnt);
+        //Fondo carta
         cnv.drawRoundRect(this.x, this.y, x + this.w, y + this.h, 6, 6, pnt);
 
-        cnv.drawBitmap(sp, this.x + 10, this.y + 10, null);
+        //Monstruo carta
+        cnv.drawBitmap(sp, this.x + 10, this.y + 10, pnt);
 
         pnt = new Paint();
+        pnt.setColor(Color.parseColor("#3498db"));
+        pnt.setAntiAlias(true);
 
-        pnt.setColor(Color.parseColor("#347474"));
+        //name
+        pnt.setColor(Color.parseColor("#000000"));
+        pnt.setTextSize(25);
+        cnv.drawText("" + this.monster.name, this.x + 10, this.y + 25, pnt);
 
+        //BordeCarta
+        pnt.setStyle(Paint.Style.STROKE);
+        pnt.setColor(Color.BLACK);
+        pnt.setStrokeWidth(1);
+        cnv.drawRoundRect(this.x, this.y, this.x + this.w, this.y + this.h, 6, 6, pnt);
+
+
+        pnt.setStyle(Paint.Style.FILL);
+        pnt.setColor(Color.parseColor("#3498db"));
+        //mana
         int circPosX = this.x + this.w - 30;
-        int circPosY = this.y + this.h - 30;
+        int circPosY = this.y - 10;
 
         cnv.drawCircle(circPosX, circPosY, 25, pnt);
 
         pnt.setColor(Color.parseColor("#ffffff"));
         pnt.setTextSize(35);
-        cnv.drawText("" + this.monster.lvl, circPosX - 10, circPosY + 15, pnt);
+        cnv.drawText("" + this.mana, circPosX - 10, circPosY + 15, pnt);
 
-        pnt.setColor(Color.parseColor("#000000"));
+        //Damage and life
+
+        int xposDmg = this.x + 25;
+        int yposDmg = this.y + this.w + 35;
+
+        pnt.setColor(Color.parseColor("#E74C3C"));
+        cnv.drawCircle(xposDmg, yposDmg, 20, pnt);
+
+        pnt.setColor(Color.parseColor("#ffffff"));
         pnt.setTextSize(25);
-        cnv.drawText("" + this.monster.name, this.x + 10, this.y + 25, pnt);
+        cnv.drawText("" + this.monster.damage, xposDmg - 5, yposDmg + 10, pnt);
 
-        pnt.setStyle(Paint.Style.STROKE);
-        pnt.setColor(Color.BLACK);
-        pnt.setStrokeWidth(1);
-        cnv.drawRoundRect(this.x, this.y, this.x + this.w, this.y + this.h, 6, 6, pnt);
+        int xposLife = this.x + this.w - 25;
+        int yposLife = this.y + this.w + 35;
+
+        pnt.setColor(Color.parseColor("#1ABC9C"));
+        cnv.drawCircle(xposLife, yposLife, 20, pnt);
+
+        pnt.setColor(Color.parseColor("#ffffff"));
+        pnt.setTextSize(25);
+        cnv.drawText("" + this.monster.life, xposLife - 15, yposLife + 10, pnt);
     }
 }

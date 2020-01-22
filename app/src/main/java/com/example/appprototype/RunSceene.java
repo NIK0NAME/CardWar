@@ -17,6 +17,7 @@ public class RunSceene {
     public Battlefield campoAliado, campoEnemigo;
     public int w, h;
     public Context cnt;
+    public GameButton nextRound;
 
     public RunSceene(Context cnt, int w, int h) {
         this.cnt = cnt;
@@ -73,6 +74,8 @@ public class RunSceene {
 
         this.sceeneState = "primerTurnoRondaAliado";
 
+        //this.nextRound = new GameButton();
+
     }
 
     public void update() {
@@ -111,7 +114,7 @@ public class RunSceene {
     }
 
     public void touchEvento(int x, int y) {
-        if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer.selectedCard)) {
+        if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer)) {
             this.cardDisplayer.removeSelected();
         }
         this.cardDisplayer.checkCardSelection(x, y);
