@@ -32,7 +32,7 @@ public class Card {
     }
 
     public void draw(Canvas cnv) {
-        Bitmap sp = Bitmap.createScaledBitmap(this.cardSprite, this.w - 20, this.h - 20, false);
+        Bitmap sp = Bitmap.createScaledBitmap(this.monster.sprite, this.w - 20, this.h - 20, false);
         Paint pnt = new Paint();
 
         if(this.selected) {

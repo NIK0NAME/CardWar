@@ -9,6 +9,7 @@ import android.graphics.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RunSceene {
     public String sceeneState;
@@ -73,9 +74,11 @@ public class RunSceene {
                 catillaSp);
         this.cardDisplayer = new CardDisplayer(0, this.h - cardsDisplayerHeight, this.w, cardsDisplayerHeight, this.cnt);
 
-        this.sceeneState = "primerTurnoRondaAliado";
+        this.sceeneState = "primerTurnoAliado";
 
         this.nextRound = new GameButton(this.w - 170, initialBattlefieldPosY + battlefieldHeight/2 - 120, 150, 90, readyButton);
+
+        primerTurnoEnemigo();
     }
 
     public void update() {
@@ -84,11 +87,19 @@ public class RunSceene {
     }
 
     public void primerTurnoAliado() {
-        if(this.cardDisplayer.cartas.size() < 5) {
-            //añadir catas
-            this.cardDisplayer.addCard();
+        this.sceeneState = "finTurnoAliado";
+        this.cardDisplayer.addCard();
+    }
+
+    public void primerTurnoEnemigo() {
+        Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster2);
+        Random rnd = new Random();
+        for(int i = 0; i < 4; i++) {
+            Monster m = new Monster(cardSp6, "monster", 3, "jesus", rnd.nextInt(6), rnd.nextInt(3));
+            this.campoEnemigo.addCarta(m, rnd.nextInt(this.campoEnemigo.casillas.size() - 1));
         }
-        this.cardDisplayer.mana = 5;
+
+        primerTurnoAliado();
     }
 
     public void stateMachine() {
@@ -115,10 +126,12 @@ public class RunSceene {
 
     public void touchEvento(int x, int y) {
         if(this.nextRound.isPressed(x, y)) {
-            this.sceeneState = "finTurnoAliado";
+            primerTurnoEnemigo();
         }
 
-        if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer)) {
+        if(this.campoEnemigo.cmporbarCarta(x, y, this.campoAliado)) {
+
+        }else if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer)) {
             this.cardDisplayer.removeSelected();
         }
         this.cardDisplayer.checkCardSelection(x, y);

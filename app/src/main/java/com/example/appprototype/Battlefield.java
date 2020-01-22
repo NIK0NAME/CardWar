@@ -10,6 +10,7 @@ public class Battlefield {
     public int x, y, w, h, tamCasilla, wBattlefield, hBattlefield;
     public List<Casilla> casillas;
     public List<Bitmap> spriteCasilla;
+    public Casilla selCasilla;
 
     public Battlefield(int x, int y, int w, int h, int tamCasilla, List<Bitmap> spriteCasilla) {
         this.x = x;
@@ -22,6 +23,7 @@ public class Battlefield {
         this.hBattlefield = 3;
         this.casillas = new ArrayList<>();
         this.inicializarCampo();
+        this.selCasilla = null;
     }
 
     public void inicializarCampo(){
@@ -42,9 +44,10 @@ public class Battlefield {
         }
     }
 
-    public void addCarta(Card c){
-
+    public void addCarta(Monster m, int pos){
+        this.casillas.get(pos).setMonster(m);
     }
+
     public void mostrarCasillaDisponible(Card c) {
         if(c != null) {
             for(int i = 0; i < this.casillas.size(); i++) {
@@ -63,6 +66,7 @@ public class Battlefield {
             Casilla cs = this.casillas.get(i);
 
             cs.selected = false;
+            this.selCasilla = null;
         }
         if(c.selectedCard == null) {
             for(int i = 0; i < this.casillas.size(); i++) {
@@ -70,6 +74,7 @@ public class Battlefield {
                 if (x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
                     if (cs.state.equals("full")) {
                         cs.selected = true;
+                        this.selCasilla = cs;
                         return false;
                     }
                 }
@@ -102,5 +107,40 @@ public class Battlefield {
             Casilla cs = this.casillas.get(i);
             cs.draw(canvas);
         }
+    }
+
+    public boolean cmporbarCarta(int x, int y, Battlefield campoAliado) {
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+
+            cs.selected = false;
+            this.selCasilla = null;
+        }
+        if(campoAliado.selCasilla == null) {
+            /*for(int i = 0; i < this.casillas.size(); i++) {
+                Casilla cs = this.casillas.get(i);
+                if (x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
+                    if (cs.state.equals("full")) {
+                        cs.selected = true;
+                        return false;
+                    }
+                }
+            }*/
+            return false;
+        }
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+            if(x > cs.x && x < cs.x + cs.w && y > cs.y && y < cs.y + cs.h) {
+                if(cs.state.equals("full")) {
+                    cs.monster.life -= campoAliado.selCasilla.monster.damage;
+                    if(cs.monster.life <= 0) {
+                        cs.monster = null;
+                        cs.state = "empty";
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

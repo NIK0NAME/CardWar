@@ -38,6 +38,7 @@ public class CardDisplayer {
     public int selDisp = 1;
     public int mana = 5;
     public int cartW, cartH;
+    public Bitmap [] spdisponibles;
 
 
     public CardDisplayer(int x, int y, int w, int h, Context cnt) {
@@ -45,7 +46,7 @@ public class CardDisplayer {
         this.dimensions = new Point(w, h);
 
         this.cartW = 180;
-        this.cartW = 240;
+        this.cartH = 240;
 
         this.cnt = cnt;
 
@@ -74,6 +75,8 @@ public class CardDisplayer {
         Bitmap [] firstIdle = {idl1, idl2, idl3, idl4, idl5, idl6, idl7, idl8, idl9, idl10};
         Bitmap [] m4idle = {m4idle1, cardSp5, cardSp5, cardSp5, m4idle1, m4idle1};
         String [] namess = {"M. DESTRUYER", "EL BICHO", "EL BICHO", "COLGADO", "EL BICHO", "M. DESTRUYER", "ILLHO"};
+
+        this.spdisponibles = cardSps;
 
         int separation = 180 + (((this.dimensions.x - 80) - ((this.cardsCount) * 180)) / this.cardsCount);
         int initpos = ((this.dimensions.x) - (separation * cardsCount)) / 2;
@@ -142,10 +145,20 @@ public class CardDisplayer {
     }
 
     public void addCard() {
+        this.mana = 5;
+        if(this.cartas.size() >= 5) {
+            return;
+        }
         Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster5);
-        Card crd = new Card(0 ,0, this.cartW, this.cartH, "#ccc", 4, cardSp6, "piter", 10, 10);
+        Random rnd = new Random();
+        Card crd = new Card(0 ,0, this.cartW, this.cartH, "#cccccc", 4, cardSp6, "piter", 10, 10);
+        crd.mana = rnd.nextInt(5);
+        crd.monster.life = rnd.nextInt(10);
+        crd.monster.damage = rnd.nextInt(10);
+        crd.monster.sprite = this.spdisponibles[rnd.nextInt(this.spdisponibles.length - 1)];
         this.cartas.add(crd);
         this.calculateCardsPosition();
+
     }
 
     public void draw(Canvas cnv) {

@@ -2,6 +2,8 @@ package com.example.appprototype;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ public class Monster {
     public String name;
     public int damage;
     public int life;
+    public String state; // ready, attack,
 
     public Monster(Bitmap sp, String type, int lvl, String name, int damage, int life) {
         this.sprite = sp;
@@ -29,6 +32,7 @@ public class Monster {
         this.life = life;
         this.anims = new HashMap<>();
         this.currentAnim = new ArrayList<>();
+        this.state = "created";
     }
 
     public void setAnimation(String name) {
@@ -60,5 +64,33 @@ public class Monster {
             cnv.drawBitmap(bpm, this.x, this.y, null);
         }
 
+        //Damage and life
+        Paint pnt = new Paint();
+        Paint strokePaint = new Paint();
+        strokePaint.setAntiAlias(true);
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setColor(Color.BLACK);
+
+        int xposDmg = this.x + 25;
+        int yposDmg = this.y + this.w + 55;
+
+        pnt.setColor(Color.parseColor("#e53935"));
+        cnv.drawCircle(xposDmg, yposDmg, 20, pnt);
+        cnv.drawCircle(xposDmg, yposDmg, 20, strokePaint);
+
+        pnt.setColor(Color.parseColor("#ffffff"));
+        pnt.setTextSize(25);
+        cnv.drawText("" + this.damage, xposDmg - 5, yposDmg + 10, pnt);
+
+        int xposLife = this.x + this.w - 25;
+        int yposLife = this.y + this.w + 55;
+
+        pnt.setColor(Color.parseColor("#1ABC9C"));
+        cnv.drawCircle(xposLife, yposLife, 20, pnt);
+        cnv.drawCircle(xposLife, yposLife, 20, strokePaint);
+
+        pnt.setColor(Color.parseColor("#ffffff"));
+        pnt.setTextSize(25);
+        cnv.drawText("" + this.life, xposLife - 15, yposLife + 10, pnt);
     }
 }

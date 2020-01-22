@@ -60,5 +60,7 @@ public class Casilla {
         this.monster.y = charPosY;
         this.monster.w = charSizeX;
         this.monster.h = charSizeY;
+
+        this.state = "full";
     }
 }
