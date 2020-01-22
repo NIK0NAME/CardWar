@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Battlefield {
     public int x, y, w, h, tamCasilla, wBattlefield, hBattlefield;
@@ -61,13 +62,32 @@ public class Battlefield {
         }
     }
 
-    public boolean comprobarCasilla(int x, int y, CardDisplayer c) {
+    public Casilla getMonster() {
+        if(this.allDead()) {
+            return null;
+        }
+        List<Casilla> monstersDisponibles = new ArrayList<>();
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+            if(cs.state.equals("full")) {
+                monstersDisponibles.add(cs);
+            }
+        }
+        Random rnd = new Random();
+        return monstersDisponibles.get(rnd.nextInt(monstersDisponibles.size()));
+    }
+
+    public void freeCellSelection() {
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
 
             cs.selected = false;
             this.selCasilla = null;
         }
+    }
+
+    public boolean comprobarCasilla(int x, int y, CardDisplayer c) {
+        this.freeCellSelection();
         if(c.selectedCard == null) {
             for(int i = 0; i < this.casillas.size(); i++) {
                 Casilla cs = this.casillas.get(i);
@@ -109,6 +129,18 @@ public class Battlefield {
         }
     }
 
+    public boolean allDead() {
+        for(int i = 0; i < this.casillas.size(); i++) {
+            Casilla cs = this.casillas.get(i);
+            if(cs.state.equals("empty")) {
+                continue;
+            }else {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void readyToRound() {
         for(int i = 0; i < this.casillas.size(); i++) {
             Casilla cs = this.casillas.get(i);
@@ -120,12 +152,7 @@ public class Battlefield {
     }
 
     public boolean cmporbarCarta(int x, int y, Battlefield campoAliado) {
-        for(int i = 0; i < this.casillas.size(); i++) {
-            Casilla cs = this.casillas.get(i);
-
-            cs.selected = false;
-            this.selCasilla = null;
-        }
+        this.freeCellSelection();
         if(campoAliado.selCasilla == null) {
             /*for(int i = 0; i < this.casillas.size(); i++) {
                 Casilla cs = this.casillas.get(i);
@@ -152,6 +179,7 @@ public class Battlefield {
                     if(campoAliado.selCasilla.monster.life <= 0) {
                         campoAliado.selCasilla.monster = null;
                         campoAliado.selCasilla.state = "empty";
+                        campoAliado.selCasilla.selected = false;
                     }
                     return true;
                 }

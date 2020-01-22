@@ -37,6 +37,7 @@ public class CardDisplayer {
     public Context cnt;
     public int selDisp = 1;
     public int mana = 5;
+    public int life = 30;
     public int cartW, cartH;
     public Bitmap [] spdisponibles;
 
@@ -55,16 +56,8 @@ public class CardDisplayer {
         Bitmap cardSp5 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster4);
         Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster5);
 
-        Bitmap idl1 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__000);
-        Bitmap idl2 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__001);
-        Bitmap idl3 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__002);
-        Bitmap idl4 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__003);
-        Bitmap idl5 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__004);
-        Bitmap idl6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__005);
-        Bitmap idl7 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__006);
-        Bitmap idl8 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__007);
-        Bitmap idl9 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__008);
-        Bitmap idl10 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.idle__009);
+        Bitmap bread1 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.bread_1);
+        Bitmap bread2 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.bread_2);
 
         Bitmap m4idle1 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster4_idle_1);
 
@@ -72,7 +65,7 @@ public class CardDisplayer {
 
         this.cardsCount = 5;
         Bitmap [] cardSps = {cardSp5, cardSp3, cardSp3, cardSp4, cardSp3, cardSp5, cardSp6};
-        Bitmap [] firstIdle = {idl1, idl2, idl3, idl4, idl5, idl6, idl7, idl8, idl9, idl10};
+        Bitmap [] beradSp = {bread1, bread1, bread2, bread1};
         Bitmap [] m4idle = {m4idle1, cardSp5, cardSp5, cardSp5, m4idle1, m4idle1};
         String [] namess = {"M. DESTRUYER", "EL BICHO", "EL BICHO", "COLGADO", "EL BICHO", "M. DESTRUYER", "ILLHO"};
 
@@ -98,7 +91,7 @@ public class CardDisplayer {
                 crd.monster.addAnimation("idle", new ArrayList<Bitmap>(Arrays.asList(m4idle)));
                 crd.monster.setAnimation("idle");
             }else if (i == 1) {
-                crd.monster.addAnimation("idle", new ArrayList<Bitmap>(Arrays.asList(firstIdle)));
+                crd.monster.addAnimation("idle", new ArrayList<Bitmap>(Arrays.asList(beradSp)));
                 crd.monster.setAnimation("idle");
             }
             Random rnd = new Random();
@@ -169,6 +162,8 @@ public class CardDisplayer {
         int h = this.position.y + this.dimensions.y;
         cnv.drawRoundRect(this.position.x, this.position.y, w, h, 10, 10, pnt);
 
+
+        //Mana
         Paint manaPaint = new Paint();
         manaPaint.setColor(Color.parseColor("#3498db"));
         int circSize = 100;
@@ -179,6 +174,17 @@ public class CardDisplayer {
         pnt.setTextSize(80);
         pnt.setColor(Color.parseColor("#ffffff"));
         cnv.drawText("" + this.mana, circX + 30, circY  + 80, pnt);
+
+        //Life
+        manaPaint.setColor(Color.parseColor("#2ecc71"));
+        circSize = 100;
+        circX = this.position.x + this.dimensions.x - 130;
+        circY = this.position.y - 50;
+        cnv.drawRoundRect(circX, circY, circX + circSize, circY + circSize, 20 ,20, manaPaint);
+
+        pnt.setTextSize(80);
+        pnt.setColor(Color.parseColor("#ffffff"));
+        cnv.drawText("" + this.life, circX + 10, circY  + 80, pnt);
 
         if(this.cartas.size() > 0) {
 

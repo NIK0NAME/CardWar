@@ -87,19 +87,30 @@ public class RunSceene {
     }
 
     public void primerTurnoAliado() {
-        this.sceeneState = "finTurnoAliado";
+        this.nextRound.visible = true;
+        this.sceeneState = "alieAtack";
         this.cardDisplayer.addCard();
         this.campoAliado.readyToRound();
         this.round++;
     }
 
+    public void turnoAliado() {
+        this.nextRound.visible = true;
+        this.sceeneState = "alieAtack";
+        this.cardDisplayer.addCard();
+        this.campoAliado.readyToRound();
+    }
+
     public void primerTurnoEnemigo() {
+        this.campoAliado.freeCellSelection();
+        this.nextRound.visible = false;
+        this.sceeneState = "enemyAtack";
         final Context cntt = this.cnt;
         final Battlefield camp = this.campoEnemigo;
         Thread h = new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap cardSp6 = BitmapFactory.decodeResource(cntt.getResources(), R.drawable.monster2);
+                Bitmap cardSp6 = BitmapFactory.decodeResource(cntt.getResources(), R.drawable.monster3);
                 Random rnd = new Random();
                 for(int i = 0; i < 4; i++) {
                     Monster m = new Monster(cardSp6, "monster", 3, "jesus", rnd.nextInt(6), rnd.nextInt(3));
@@ -139,19 +150,81 @@ public class RunSceene {
         this.cardDisplayer.draw(cnv);
     }
 
+    public void turnoEnemigo() {
+        this.campoAliado.freeCellSelection();
+        this.nextRound.visible = false;
+        this.sceeneState = "enemyAtack";
+        final Context cntt = this.cnt;
+        final Battlefield camp = this.campoEnemigo;
+        final Battlefield alie = this.campoAliado;
+        final CardDisplayer disp = this.cardDisplayer;
+        Thread h = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap cardSp6 = BitmapFactory.decodeResource(cntt.getResources(), R.drawable.monster2);
+                Random rnd = new Random();
+                for(Casilla cs : camp.casillas) {
+                    if(cs.state.equals("full")) {
+                        try {
+                            Thread.sleep(500);
+                        }catch (Exception ex) {
+
+                        }
+                        cs.selected = true;
+                        Casilla alieCs = alie.getMonster();
+                        if(alieCs != null) {
+                            alieCs.selected = true;
+                            alieCs.monster.life -= cs.monster.damage;
+                            if(alieCs.monster.life <= 0) {
+                                alieCs.monster = null;
+                                alieCs.state = "empty";
+                            }
+                            try {
+                                Thread.sleep(500);
+                            }catch (Exception ex) {
+                            }
+                            alieCs.selected = false;
+                        }else {
+                            disp.life -= cs.monster.damage;
+                            try {
+                                Thread.sleep(500);
+                            }catch (Exception ex) {
+                            }
+                        }
+                        cs.selected = false;
+                    }
+                }
+
+                turnoAliado();
+            }
+        });
+        h.start();
+    }
+
     public void touchEvento(int x, int y) {
         if(this.nextRound.isPressed(x, y)) {
-            primerTurnoEnemigo();
+            if(this.campoEnemigo.allDead()) {
+                primerTurnoEnemigo();
+            }else {
+                turnoEnemigo();
+            }
+
         }
 
-        if(this.campoEnemigo.cmporbarCarta(x, y, this.campoAliado)) {
+        if(this.sceeneState.equals("alieAtack")) {
+            if(this.campoEnemigo.cmporbarCarta(x, y, this.campoAliado)) {
 
-        }else if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer)) {
-            this.cardDisplayer.removeSelected();
+            }else if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer)) {
+                this.cardDisplayer.removeSelected();
+            }
         }
+
         this.cardDisplayer.checkCardSelection(x, y);
 
-        this.campoAliado.mostrarCasillaDisponible(this.cardDisplayer.selectedCard);
+        if(this.sceeneState.equals("alieAtack")) {
+            this.campoAliado.mostrarCasillaDisponible(this.cardDisplayer.selectedCard);
+        }
+
     }
 
 }
