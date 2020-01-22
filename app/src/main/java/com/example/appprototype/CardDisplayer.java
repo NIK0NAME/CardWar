@@ -37,11 +37,15 @@ public class CardDisplayer {
     public Context cnt;
     public int selDisp = 1;
     public int mana = 5;
+    public int cartW, cartH;
 
 
     public CardDisplayer(int x, int y, int w, int h, Context cnt) {
         this.position = new Point(x, y);
         this.dimensions = new Point(w, h);
+
+        this.cartW = 180;
+        this.cartW = 240;
 
         this.cnt = cnt;
 
@@ -135,6 +139,13 @@ public class CardDisplayer {
 
     public void calculateCardOrientation() {
 
+    }
+
+    public void addCard() {
+        Bitmap cardSp6 = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.monster5);
+        Card crd = new Card(0 ,0, this.cartW, this.cartH, "#ccc", 4, cardSp6, "piter", 10, 10);
+        this.cartas.add(crd);
+        this.calculateCardsPosition();
     }
 
     public void draw(Canvas cnv) {

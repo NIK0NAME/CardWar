@@ -2,6 +2,8 @@ package com.example.appprototype;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 public class GameButton {
     public int x, y, w, h;
@@ -16,9 +18,15 @@ public class GameButton {
     }
 
     public void draw(Canvas cnv) {
-        Bitmap bpm = Bitmap.createScaledBitmap(this.back, this.w, this.h, false);
-
-        cnv.drawBitmap(bpm, this.x, this.y, null);
+        if(this.back != null) {
+            Bitmap bpm = Bitmap.createScaledBitmap(this.back, this.w, this.h, false);
+            cnv.drawBitmap(bpm, this.x, this.y, null);
+        }else {
+            Paint pnt = new Paint();
+            pnt.setAntiAlias(true);
+            pnt.setColor(Color.parseColor("#E67E22"));
+            cnv.drawRect(this.x, this.y, this.x + this.w, this.y + this.h, pnt);
+        }
     }
 
     public boolean isPressed(int x, int y) {

@@ -51,6 +51,7 @@ public class RunSceene {
         initialBattlefieldPosX = (this.w - battlefieldWidth) / 2;
 
         Bitmap end_tile = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.end_battlefield_tile);
+        Bitmap readyButton = BitmapFactory.decodeResource(this.cnt.getResources(), R.drawable.ready_button);
 
         end_tile = Bitmap.createScaledBitmap(end_tile, tileInitialSize, tileInitialSize * 2, false);
         //tile_card_background = Bitmap.createScaledBitmap(tile_card_background, tileInitialSize, tileInitialSize * 2, false);
@@ -74,8 +75,7 @@ public class RunSceene {
 
         this.sceeneState = "primerTurnoRondaAliado";
 
-        //this.nextRound = new GameButton();
-
+        this.nextRound = new GameButton(this.w - 170, initialBattlefieldPosY + battlefieldHeight/2 - 120, 150, 90, readyButton);
     }
 
     public void update() {
@@ -84,13 +84,11 @@ public class RunSceene {
     }
 
     public void primerTurnoAliado() {
-        Thread h = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //add card
-                //
-            }
-        });
+        if(this.cardDisplayer.cartas.size() < 5) {
+            //añadir catas
+            this.cardDisplayer.addCard();
+        }
+        this.cardDisplayer.mana = 5;
     }
 
     public void stateMachine() {
@@ -109,11 +107,17 @@ public class RunSceene {
         cnv.drawText("" + this.round, this.w / 2, 100, pnt);
 
         this.campoEnemigo.draw(cnv);
+
         this.campoAliado.draw(cnv);
+        this.nextRound.draw(cnv);
         this.cardDisplayer.draw(cnv);
     }
 
     public void touchEvento(int x, int y) {
+        if(this.nextRound.isPressed(x, y)) {
+            this.sceeneState = "finTurnoAliado";
+        }
+
         if(this.campoAliado.comprobarCasilla(x, y, this.cardDisplayer)) {
             this.cardDisplayer.removeSelected();
         }
