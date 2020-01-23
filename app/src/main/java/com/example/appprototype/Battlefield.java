@@ -27,6 +27,21 @@ public class Battlefield {
         this.selCasilla = null;
     }
 
+    public void updateCampo() {
+        int posX = this.x;
+        int posY = this.y;
+        int coner = 0;
+        for(int i = 0; i < hBattlefield; i++) {
+            for(int n = 0; n < wBattlefield; n++) {
+                Casilla cs = this.casillas.get(coner);
+                cs.x = posX;
+                posX += this.tamCasilla;
+                coner++;
+            }
+            posX = this.x;
+        }
+    }
+
     public void inicializarCampo(){
         int posX = this.x;
         int posY = this.y;

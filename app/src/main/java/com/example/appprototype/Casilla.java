@@ -27,13 +27,7 @@ public class Casilla {
     public void draw(Canvas cnv) {
         Paint pnt = new Paint();
         cnv.drawBitmap(this.sprite, this.x, this.y, pnt);
-        //  Draw selected rect
-        if(this.selected) {
-            pnt.setStyle(Paint.Style.STROKE);
-            pnt.setStrokeWidth(3);
-            pnt.setColor(Color.parseColor("#FF0000"));
-            cnv.drawRoundRect(this.x + 20, this.y + 20, this.x + this.w - 20, this.y + this.h - 20, 10 ,10, pnt);
-        }
+
         //  Draw the monster
         if(this.monster != null) {
 
@@ -45,8 +39,23 @@ public class Casilla {
                 //pnt.setStrokeWidth(4);
                 cnv.drawRoundRect(this.x + 18, this.y + 18, this.x + this.w - 18, this.y + this.h - 18, 10 ,10, pnt);
             }
+            //  Draw selected rect
+            if(this.selected) {
+                pnt.setStyle(Paint.Style.STROKE);
+                pnt.setStrokeWidth(6);
+                pnt.setColor(Color.parseColor("#FF0000"));
+                cnv.drawRoundRect(this.x + 20, this.y + 20, this.x + this.w - 20, this.y + this.h - 20, 10 ,10, pnt);
+            }
 
             this.monster.draw(cnv);
+        }else {
+            //  Draw selected rect
+            if(this.selected) {
+                pnt.setStyle(Paint.Style.STROKE);
+                pnt.setStrokeWidth(6);
+                pnt.setColor(Color.parseColor("#FF0000"));
+                cnv.drawRoundRect(this.x + 20, this.y + 20, this.x + this.w - 20, this.y + this.h - 20, 10 ,10, pnt);
+            }
         }
 
         //  Life counter

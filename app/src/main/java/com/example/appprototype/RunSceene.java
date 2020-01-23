@@ -19,6 +19,8 @@ public class RunSceene {
     public int w, h;
     public Context cnt;
     public GameButton nextRound;
+    public List<Float> linePnts = null;
+    public boolean lineVisible = false;
 
     public RunSceene(Context cnt, int w, int h) {
         this.cnt = cnt;
@@ -29,6 +31,7 @@ public class RunSceene {
     }
 
     public void initializeGame() {
+        this.linePnts = new ArrayList<>();
         int cardsDisplayerHeight,
                 battlefieldWidth,
                 battlefieldHeight;
@@ -78,12 +81,61 @@ public class RunSceene {
 
         this.nextRound = new GameButton(this.w - 170, initialBattlefieldPosY + battlefieldHeight/2 - 120, 150, 90, readyButton);
 
-        primerTurnoEnemigo();
+        firstShow();
+
     }
 
     public void update() {
         //stateMachine();
         this.campoAliado.update();
+    }
+
+    public void firstShow() {
+        final Battlefield camAlie = this.campoAliado;
+        final Battlefield camEnem = this.campoEnemigo;
+        Thread h = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int finalUbicationA = camAlie.x;
+                int finalUbicationE = camEnem.x;
+                int startA = -camAlie.w;
+                int startB = camAlie.w + camEnem.tamCasilla;
+                camAlie.x = startA;
+                camEnem.x = startB;
+                camAlie.updateCampo();
+                camEnem.updateCampo();
+                try {
+                    Thread.sleep(500);
+                }catch (Exception ex) {
+
+                }
+                while(startA < finalUbicationA) {
+                    startA += 2;
+                    startB -= 2;
+                    camAlie.x = startA;
+                    camEnem.x = startB;
+                    camAlie.updateCampo();
+                    camEnem.updateCampo();
+                    try {
+                        Thread.sleep(2);
+                    }catch (Exception ex) {
+
+                    }
+                }
+                camAlie.x = finalUbicationA;
+                camEnem.x = finalUbicationE;
+                camAlie.updateCampo();
+                camEnem.updateCampo();
+                try {
+                    Thread.sleep(100);
+                }catch (Exception ex) {
+
+                }
+                primerTurnoEnemigo();
+            }
+        });
+
+        h.start();
     }
 
     public void primerTurnoAliado() {
@@ -95,6 +147,7 @@ public class RunSceene {
     }
 
     public void turnoAliado() {
+        this.lineVisible = false;
         this.nextRound.visible = true;
         this.sceeneState = "alieAtack";
         this.cardDisplayer.addCard();
@@ -146,6 +199,11 @@ public class RunSceene {
         this.campoEnemigo.draw(cnv);
 
         this.campoAliado.draw(cnv);
+        if(this.lineVisible && this.linePnts.size() > 0) {
+            pnt.setColor(Color.RED);
+            pnt.setStrokeWidth(5);
+            cnv.drawLine(this.linePnts.get(0), this.linePnts.get(1), this.linePnts.get(2), this.linePnts.get(3), pnt);
+        }
         this.nextRound.draw(cnv);
         this.cardDisplayer.draw(cnv);
     }
@@ -158,6 +216,9 @@ public class RunSceene {
         final Battlefield camp = this.campoEnemigo;
         final Battlefield alie = this.campoAliado;
         final CardDisplayer disp = this.cardDisplayer;
+        this.lineVisible = true;
+
+        final List<Float> line = this.linePnts;
         Thread h = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -165,32 +226,43 @@ public class RunSceene {
                 Random rnd = new Random();
                 for(Casilla cs : camp.casillas) {
                     if(cs.state.equals("full")) {
+
+                        cs.selected = true;
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(700);
                         }catch (Exception ex) {
 
                         }
-                        cs.selected = true;
                         Casilla alieCs = alie.getMonster();
                         if(alieCs != null) {
                             alieCs.selected = true;
                             alieCs.monster.life -= cs.monster.damage;
+                            cs.monster.life -= alieCs.monster.damage;
+                            line.add((float)(cs.x + cs.w / 2));
+                            line.add((float)(cs.y + cs.h));
+                            line.add((float)(alieCs.x + alieCs.w / 2));
+                            line.add((float)(alieCs.y));
                             if(alieCs.monster.life <= 0) {
                                 alieCs.monster = null;
                                 alieCs.state = "empty";
                             }
+                            if(cs.monster.life <= 0) {
+                                cs.monster = null;
+                                cs.state = "empty";
+                            }
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep(1000);
                             }catch (Exception ex) {
                             }
                             alieCs.selected = false;
                         }else {
                             disp.life -= cs.monster.damage;
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep(1000);
                             }catch (Exception ex) {
                             }
                         }
+                        line.clear();
                         cs.selected = false;
                     }
                 }
