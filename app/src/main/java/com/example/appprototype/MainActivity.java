@@ -3,6 +3,7 @@ package com.example.appprototype;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -133,8 +134,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if(view == btnPlay) {
-            setContentView(new SuperficieJuego(this, this.w, this.h, getWindow().getDecorView()));
-
+            //setContentView(new SuperficieJuego(this, this.w, this.h, getWindow().getDecorView()));
+            Intent intent = new Intent(this, UiActivity.class);
+            startActivity(intent);
         }else{
             //hideSystemUI();
         }
