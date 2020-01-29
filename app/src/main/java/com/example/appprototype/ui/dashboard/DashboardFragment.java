@@ -1,9 +1,11 @@
 package com.example.appprototype.ui.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,11 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.appprototype.InGame;
 import com.example.appprototype.R;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements View.OnClickListener {
 
     private DashboardViewModel dashboardViewModel;
+    public Button btnPlayGame;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +34,18 @@ public class DashboardFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        btnPlayGame = root.findViewById(R.id.btnPlayGame);
+        btnPlayGame.setOnClickListener(this);
+
         return root;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view == btnPlayGame) {
+            Intent i  = new Intent(this.getContext(), InGame.class);
+            startActivity(i);
+        }
     }
 }

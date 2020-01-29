@@ -34,21 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);*/
 
         hideSystemUI();
-
-        Display display = getWindowManager().getDefaultDisplay();
-
-        Rect rectangle = new Rect();
-        Window window = getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-        int statusBarHeight = rectangle.top;
-
-        Point size = new Point();
-        display.getRealSize(size);
-        this.w = size.x;
-        this.h = size.y; // - 75 - 18;
-
-
-
+        
         setContentView(R.layout.activity_main);
         //setContentView(new SuperficieJuego(this, this.w, this.h, getWindow().getDecorView()));
 
@@ -134,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if(view == btnPlay) {
-            //setContentView(new SuperficieJuego(this, this.w, this.h, getWindow().getDecorView()));
+            // setContentView(new SuperficieJuego(this, this.w, this.h, getWindow().getDecorView()));
             Intent intent = new Intent(this, UiActivity.class);
             startActivity(intent);
         }else{
