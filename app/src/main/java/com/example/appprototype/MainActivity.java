@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);*/
 
         hideSystemUI();
-        
+
         setContentView(R.layout.activity_main);
         //setContentView(new SuperficieJuego(this, this.w, this.h, getWindow().getDecorView()));
 
